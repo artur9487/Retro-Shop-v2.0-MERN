@@ -1,0 +1,9 @@
+/** @format */
+
+.boxek {
+	&:hover {
+		.childBox {
+			bottom: 0px;
+		}
+	}
+}

@@ -1,0 +1,25 @@
+/** @format */
+
+@import '../globalVariables.scss';
+
+nav {
+	color: $primary-color;
+	background-color: $background-color;
+	transition: all 0.5s ease-in-out;
+	.appBar {
+		transition: all 0.5s ease-in-out;
+		@include nav-height;
+	}
+}
+
+.text {
+	color: #212121;
+}
+
+.links {
+	text-decoration: none;
+}
+
+.active {
+	color: $active-color;
+}

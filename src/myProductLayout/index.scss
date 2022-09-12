@@ -1,0 +1,19 @@
+/** @format */
+
+.myImg {
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+	border-radius: 1rem;
+}
+
+input[type='file'] {
+	display: none;
+}
+
+.inpImgCss {
+	border: 0px;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 20px;
+}
