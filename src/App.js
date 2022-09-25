@@ -51,6 +51,13 @@ function App() {
 								<Route path=':productID' element={<ProductDetails />} />
 							</Route>
 							<Route
+								path='/order'
+								element={
+									<LayoutWithCart>
+										<AllProducts />
+									</LayoutWithCart>
+								}></Route>
+							<Route
 								path='yourProduct'
 								element={
 									<LayoutWithCart>

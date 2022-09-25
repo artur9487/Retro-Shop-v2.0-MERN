@@ -14,7 +14,7 @@ import { Stack } from '@mui/material';
 
 const ProductItem = (item) => {
 	const navigate = useNavigate();
-	const { productName, productPrice, id, image } = item;
+	const { productName, productPrice, _id, image } = item;
 
 	return (
 		<Card className='boxek' sx={{ width: 250, height: 350, margin: 1 }}>
@@ -43,7 +43,7 @@ const ProductItem = (item) => {
 					<Button
 						color='inherit'
 						sx={{ color: 'black', bg: 'black', textTransform: 'none' }}
-						onClick={() => navigate(`/${id}`)}>
+						onClick={() => navigate(`/${_id}`)}>
 						<Typography
 							sx={{
 								color: 'black',

@@ -16,6 +16,7 @@ import {
 } from '../../redux/Products/actions';
 import { MainContext } from '../../Context';
 import useCustomFadeHook from '../../customHooks/customFadeHook';
+import { useNavigate } from 'react-router-dom';
 
 const CartLayout = () => {
 	const { user } = useContext(MainContext);
@@ -26,6 +27,7 @@ const CartLayout = () => {
 	const dispatch = useDispatch();
 	const fontOleo = 'Oleo Script Swash Caps';
 	const { fadeIn, setFade } = useCustomFadeHook();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setFade();
@@ -45,6 +47,7 @@ const CartLayout = () => {
 		}, 0);
 
 		const handleCart = () => {
+			navigate('/');
 			dispatch(toogle_cart);
 			dispatch(cleart_cart_count);
 		};

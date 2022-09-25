@@ -172,7 +172,7 @@ const MyProducts = () => {
 
 	//------------INITIAL DATA FOR THE UPDATE DIALOG-------------
 	const handleUpdate = (id, typ) => {
-		const prod2 = prod.filter((item) => item.id === id);
+		const prod2 = prod.filter((item) => item._id === id);
 		const {
 			image,
 			productName,
@@ -380,20 +380,20 @@ const MyProducts = () => {
 													<Tooltip title='See Details'>
 														<IconButton
 															onClick={() =>
-																navigate(`/yourProduct/${row.id}`)
+																navigate(`/yourProduct/${row._id}`)
 															}>
 															<DirectionsIcon />
 														</IconButton>
 													</Tooltip>
 													<Tooltip title='Update'>
 														<IconButton
-															onClick={() => handleUpdate(row.id, 'update')}>
+															onClick={() => handleUpdate(row._id, 'update')}>
 															<BorderColorIcon />
 														</IconButton>
 													</Tooltip>
 													<Tooltip title='Remove'>
 														<IconButton
-															onClick={() => handleDelete(row.id, row.email)}>
+															onClick={() => handleDelete(row._id, row.email)}>
 															<RemoveCircleIcon />
 														</IconButton>
 													</Tooltip>

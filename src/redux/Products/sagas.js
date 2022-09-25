@@ -1,6 +1,7 @@
 /** @format */
 
 import { db } from '../../fireUtil';
+import axios from 'axios';
 import {
 	collection,
 	addDoc,
@@ -42,8 +43,9 @@ import { add_order_end } from './actions';
 //----------------ADD YOUR PRODUCT------------------------------
 export function* setProductStart({ payload }) {
 	try {
-		yield addDoc(collection(db, 'Products'), payload);
-		console.log('Product Added');
+		yield axios
+			.post('http://localhost:5000/yourProduct', payload)
+			.then(() => console.log('Product Added'));
 		yield put(fetch_my_products_start(payload.email));
 	} catch (e) {
 		console.error('Error adding document: ', e);
@@ -58,45 +60,21 @@ export function* onSetProduct() {
 export function* fetchProducts({ payload }) {
 	try {
 		let querySnapshot;
-		let first;
-		if (payload.page === 1) {
-			first = query(
-				collection(db, 'Products'),
-				orderBy('date', 'desc'),
-				limit(payload.limit)
-			);
-			querySnapshot = yield getDocs(first);
-		} else {
-			first = query(
-				collection(db, 'Products'),
-				orderBy('date', 'desc'),
-				limit(payload.limit)
-			);
-			const documentSnapshots = yield getDocs(first);
-			const lastVisible =
-				documentSnapshots.docs[documentSnapshots.docs.length - 1];
-			const q = query(
-				collection(db, 'Products'),
-				orderBy('date', 'desc'),
-				startAfter(lastVisible),
-				limit(6)
-			);
-			querySnapshot = yield getDocs(q);
-		}
-		const querySnapshot2 = yield getDocs(collection(db, 'Products'));
+		let response;
 
-		let newDoc = [];
-		querySnapshot.forEach((doc) => {
-			newDoc.push({ ...doc.data(), id: doc.id });
+		response = yield axios.get('http://localhost:5000', {
+			params: { pageNumber: payload.page, nPerPage: payload.limit }
 		});
+		querySnapshot = response.data;
 
 		let newDoc2 = 0;
-		querySnapshot2.forEach((doc) => {
+		querySnapshot.allProducts.forEach((doc) => {
 			newDoc2++;
 			return;
 		});
+
 		const pageInfo = { limit: payload.limit, page: payload.page };
-		yield put(set_product_end(newDoc, newDoc2, pageInfo));
+		yield put(set_product_end(querySnapshot.products, newDoc2, pageInfo));
 	} catch (err) {
 		console.log(err);
 	}
@@ -108,8 +86,16 @@ export function* onfetchProducts() {
 
 //----------------DELETE YOUR OWN PRODUCT---------
 export function* deleteProductStart({ payload }) {
-	yield deleteDoc(doc(db, 'Products', payload.id));
-	yield put(fetch_my_products_start(payload.email));
+	try {
+		yield axios
+			.delete('http://localhost:5000/yourProduct', {
+				params: { id: payload.id }
+			})
+			.then(() => console.log('Product deleted'));
+		yield put(fetch_my_products_start(payload.email));
+	} catch (e) {
+		console.error('Error adding document: ', e);
+	}
 }
 
 export function* onDeleteProduct() {
@@ -118,8 +104,17 @@ export function* onDeleteProduct() {
 
 //-----------UPDATE YOUR OWN PRODUCT--------------
 export function* updateProductStart({ payload }) {
-	yield setDoc(doc(db, 'Products', payload.id), payload.product);
-	yield put(fetch_my_products_start(payload.product.email));
+	try {
+		console.log(payload);
+		yield axios
+			.put('http://localhost:5000/yourProduct', payload)
+			.then(() => console.log('Product updated'));
+
+		//yield setDoc(doc(db, 'Products', payload.id), payload.product);
+		yield put(fetch_my_products_start(payload.product.email));
+	} catch (e) {
+		console.error('Error adding document: ', e);
+	}
 }
 
 export function* onUpdateProduct() {
@@ -191,7 +186,8 @@ export function* addOrderStart({ payload }) {
 		} = payload;
 
 		const batch = writeBatch(db);
-		yield addDoc(collection(db, 'Orders'), order);
+		axios.post('http://localhost:5000/yourProduct', order);
+		//yield addDoc(collection(db, 'Orders'), order);
 		console.log('Order Added');
 
 		products.forEach((item) => {
@@ -240,17 +236,12 @@ export function* onFetchOrders() {
 
 //--------------FETCH YOUR OWN PRODUCTS----------------
 export function* fetchMyProductsStart({ payload }) {
-	const q = query(
-		collection(db, 'Products'),
-		where('email', '==', payload),
-		orderBy('date', 'desc')
-	);
-	const querySnapshot = yield getDocs(q);
-	let newDoc = [];
-	querySnapshot.forEach((doc) => {
-		newDoc.push({ ...doc.data(), id: doc.id });
+	const response = yield axios.get('http://localhost:5000/yourProduct', {
+		params: { email: payload }
 	});
-	yield put(fetch_my_products_end(newDoc));
+	const querySnapshot = response.data;
+
+	yield put(fetch_my_products_end(querySnapshot));
 }
 
 export function* onFetchMyProducts() {

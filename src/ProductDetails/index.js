@@ -36,7 +36,7 @@ const ProductDetails = () => {
 	const { pathname } = location;
 
 	const product = proProduct.filter((item) => {
-		return item.id === productID;
+		return item._id === productID;
 	});
 
 	//---------------------FADE IN LOGIC----------------------

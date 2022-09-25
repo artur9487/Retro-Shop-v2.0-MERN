@@ -8,6 +8,7 @@ import useCustomFadeHook from '../../../customHooks/customFadeHook';
 import { Stack } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { MainContext } from '../../../Context';
+import { Link } from 'react-router-dom';
 
 const WhenLogged = ({ cartCount, handleCart, handleSignOut }) => {
 	const { maxWidth600, maxWidth900, user } = useContext(MainContext);
@@ -29,29 +30,32 @@ const WhenLogged = ({ cartCount, handleCart, handleSignOut }) => {
 				direction='row'
 				alignItems='center'
 				sx={{ width: { xs: 100, sm: 225, md: 250 } }}>
-				<Stack
-					alignItems='center'
-					justifyContent={matchState ? 'space-evenly' : 'center'}
-					direction={matchState ? 'row' : 'column'}
-					sx={{ width: !maxWidth900 ? '65%' : '50%' }}>
-					<Tooltip title='Open Cart'>
-						<IconButton
-							sx={{
-								p: 1,
-								mt: 1,
-								bg: 'black',
-								color: 'black',
-								display: 'block',
-								fontSize: !maxWidth600 ? 12 : 4
-							}}
-							onClick={handleCart}>
-							<Badge badgeContent={cartCount} color='primary'>
-								<ShoppingCartIcon sx={{ fontSize: !maxWidth600 ? 25 : 20 }} />
-							</Badge>
-						</IconButton>
-					</Tooltip>
-					<NotyficationSection user={user.email} />
-				</Stack>
+				<Link to='/order'>
+					<Stack
+						alignItems='center'
+						justifyContent={matchState ? 'space-evenly' : 'center'}
+						direction={matchState ? 'row' : 'column'}
+						sx={{ width: !maxWidth900 ? '65%' : '50%' }}>
+						<Tooltip title='Open Cart'>
+							<IconButton
+								sx={{
+									p: 1,
+									mt: 1,
+									bg: 'black',
+									color: 'black',
+									display: 'block',
+									fontSize: !maxWidth600 ? 12 : 4
+								}}
+								onClick={handleCart}>
+								<Badge badgeContent={cartCount} color='primary'>
+									<ShoppingCartIcon sx={{ fontSize: !maxWidth600 ? 25 : 20 }} />
+								</Badge>
+							</IconButton>
+						</Tooltip>
+						<NotyficationSection user={user.email} />
+					</Stack>
+				</Link>
+
 				<Button
 					color='inherit'
 					sx={{
