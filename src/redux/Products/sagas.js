@@ -60,9 +60,8 @@ export function* onSetProduct() {
 export function* fetchProducts({ payload }) {
 	try {
 		let querySnapshot;
-		let response;
 
-		response = yield axios.get('http://localhost:5000', {
+		const response = yield axios.get('http://localhost:5000', {
 			params: { pageNumber: payload.page, nPerPage: payload.limit }
 		});
 		querySnapshot = response.data;
@@ -123,7 +122,6 @@ export function* onUpdateProduct() {
 
 //------------ADD THE ORDERS TO NOTYFICATIONS----------
 export function* orderNotyfication(payload) {
-	const batch = writeBatch(db);
 	const { email, date } = payload;
 	try {
 		let newArr = [];
@@ -165,11 +163,10 @@ export function* orderNotyfication(payload) {
 			}
 		}
 
-		newArr.forEach((item) => {
+		/*newArr.forEach((item) => {
 			const nycRef = doc(db, 'Notyfications', `${Math.random()}`);
 			batch.set(nycRef, item);
-		});
-		yield batch.commit();
+		});*/
 	} catch (err) {
 		console.log(err);
 	}
@@ -184,28 +181,48 @@ export function* addOrderStart({ payload }) {
 			order: { products, email },
 			pageInfo: { limit, page }
 		} = payload;
+		console.log(order);
 
-		const batch = writeBatch(db);
-		axios.post('http://localhost:5000/yourProduct', order);
-		//yield addDoc(collection(db, 'Orders'), order);
-		console.log('Order Added');
+		yield axios
+			.post('http://localhost:5000/order', order)
+			.then(() => console.log('Product ordered'));
+
+		let deleteDocuments = [];
+		let updateDocuments = [];
 
 		products.forEach((item) => {
-			const docRef = doc(db, 'Products', item.id);
 			if (item.remain === 0) {
-				batch.delete(docRef);
+				deleteDocuments.push(item._id);
 			} else {
-				batch.update(docRef, { productQuantity: item.remain });
+				updateDocuments.push({ productQuantity: item.remain, _id: item._id });
 			}
 		});
 
-		yield batch.commit();
+		if (deleteDocuments.length > 0) {
+			yield axios
+				.delete('http://localhost:5000/order', {
+					params: {
+						deleteDocuments
+					}
+				})
+				.then(() => console.log('Some products deleted'))
+				.catch((err) => console.log(`${err} occured`));
+		}
+
+		console.log(updateDocuments);
+
+		if (updateDocuments.length > 0) {
+			yield axios
+				.put('http://localhost:5000/order', updateDocuments)
+				.then(() => console.log('Some products updated'))
+				.catch((err) => console.log(`${err} occured`));
+		}
 
 		yield put(fetch_orders(email));
 		yield put(fetch_my_products_start(email));
 		yield put(fetch_purchases(email));
 		yield put(fetch_products(limit, page));
-		yield* orderNotyfication(order);
+		//	yield* orderNotyfication(order);
 	} catch (e) {
 		console.error('Error adding document: ', e);
 	}
@@ -216,18 +233,15 @@ export function* onAddOrder() {
 
 //--------------------FETCH AN ORDER-----------------
 export function* fetchOrders({ payload }) {
-	const q = query(
-		collection(db, 'Orders'),
-		where('email', '==', payload),
-		limit(10),
-		orderBy('date', 'desc')
-	);
-	const querySnapshot = yield getDocs(q);
-	let newDoc = [];
-	querySnapshot.forEach((doc) => {
-		newDoc.push({ ...doc.data(), id: doc.id });
+	const response = yield axios.get('http://localhost:5000/personalData', {
+		params: { user: payload }
 	});
-	yield put(add_order_end(newDoc));
+
+	const orders = response.data;
+
+	console.log(orders);
+
+	yield put(add_order_end(orders));
 }
 
 export function* onFetchOrders() {
@@ -271,13 +285,14 @@ export function* onFetchPurchases() {
 
 //---------------GET THE NUMBER OF THE PRODUCTS FOR THE PAGINATION------------
 export function* getProductNumber() {
-	const querySnapshot = yield getDocs(collection(db, 'Products'));
-	let newDoc = 0;
-	querySnapshot.forEach((doc) => {
-		newDoc++;
+	const response = yield axios.get('http://localhost:5000');
+	const products = response.data;
+	let docNumber = 0;
+	products.forEach(() => {
+		docNumber++;
 		return;
 	});
-	yield put(get_product_number_end(newDoc));
+	yield put(get_product_number_end(docNumber));
 }
 
 export function* onGetProductNumber() {

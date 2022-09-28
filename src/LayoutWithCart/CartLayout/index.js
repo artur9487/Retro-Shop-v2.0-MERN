@@ -42,6 +42,7 @@ const CartLayout = () => {
 
 	if (user) {
 		const { email } = user;
+		console.log(state2);
 		const total = state2.reduce((one, two) => {
 			return (one + Number(two.productPrice)).toFixed(2);
 		}, 0);
@@ -75,12 +76,12 @@ const CartLayout = () => {
 				categories: [...proCategories],
 				products: state2.map((item) => {
 					const name = item.productName;
-					const price = item.productPrice;
+					const price = Number(item.productPrice);
 					const count = item.count;
-					const id = item.id;
+					const _id = item._id;
 					const remain = item.remain;
 					const userProduct = item.email;
-					return { name, price, count, id, remain, userProduct };
+					return { name, price, count, _id, remain, userProduct };
 				})
 			};
 

@@ -59,21 +59,23 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
 			const proProducts = [...state.products];
 			const { id, quan, type } = action.payload;
 			let count2 = Number(quan);
-			const indx = proCart.findIndex((item) => item.id === id);
-			const indx2 = proProducts.findIndex((item) => item.id === id);
+			const indx = proCart.findIndex((item) => item._id === id);
+			const indx2 = proProducts.findIndex((item) => item._id === id);
 			let proCartCount = 0;
 
 			if (type === 'dashboard' && indx >= 0) {
 				proCartCount = state.cartCount + count2 - proCart[indx].count;
 				proCart[indx].count = count2;
-				proCart[indx].productPrice = (
-					proProducts[indx2].productPrice * count2
-				).toFixed(2);
+				proCart[indx].productPrice = Number(
+					(proProducts[indx2].productPrice * count2).toFixed(2)
+				);
 				proCart[indx].remain = proProducts[indx2].productQuantity - count2;
 			} else if (type === 'dashboard') {
 				proCart.push({
 					...proProducts[indx2],
-					productPrice: (proProducts[indx2].productPrice * count2).toFixed(2),
+					productPrice: Number(
+						(proProducts[indx2].productPrice * count2).toFixed(2)
+					),
 					count: count2,
 					remain: proProducts[indx2].productQuantity - count2
 				});
@@ -83,14 +85,15 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
 					console.log('no much products');
 				} else {
 					proCart[indx].count = proCart[indx].count + 1;
-					proCart[indx].productPrice = (
-						proProducts[indx2].productPrice * proCart[indx].count
-					).toFixed(2);
+					proCart[indx].productPrice = Number(
+						(proProducts[indx2].productPrice * proCart[indx].count).toFixed(2)
+					);
 					proCart[indx].remain =
 						proProducts[indx2].productQuantity - proCart[indx].count;
 					count2 = proCart[indx].count + 1;
 				}
 			}
+			console.log(proCart);
 			return {
 				...state,
 				cart: [...proCart],

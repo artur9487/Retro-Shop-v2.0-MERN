@@ -53,12 +53,59 @@ router.route('/yourProduct').get((req, res) => {
 });
 
 router.route('/order').post((req, res) => {
-	const newOrder = new Products(req.body);
+	const newOrder = new Order(req.body);
 	newOrder
 		.save()
 		.then(() => {
 			return res.json('updated');
 		})
+		.catch((err) => res.status(400).json('Error:' + err));
+});
+
+router.route('/order').delete((req, res) => {
+	const ids = req.query.deleteDocuments;
+
+	Products.bulkWrite(
+		ids.map((item) => {
+			return {
+				deleteOne: {
+					filter: { _id: item }
+				}
+			};
+		})
+	)
+		.then(() => {
+			return res.json('some products deleted');
+		})
+		.catch((err) => res.status(400).json('Error:' + err));
+});
+
+router.route('/order').put((req, res) => {
+	const updateDocuments = req.body;
+
+	Products.bulkWrite(
+		updateDocuments.map((item) => {
+			return {
+				updateOne: {
+					filter: { _id: item._id },
+					update: { $set: { productQuantity: item.productQuantity } }
+				}
+			};
+		})
+	)
+		.then(() => {
+			return res.json('some products updated');
+		})
+		.catch((err) => res.status(400).json('Error:' + err));
+});
+
+router.route('/personalData').get((req, res) => {
+	const { user } = req.query;
+
+	Order.find({ email: user })
+		.sort({ date: -1 })
+		.limit(10)
+		.then((orders) => res.json(orders))
 		.catch((err) => res.status(400).json('Error:' + err));
 });
 

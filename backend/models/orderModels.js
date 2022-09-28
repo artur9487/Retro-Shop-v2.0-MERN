@@ -12,11 +12,11 @@ const OrderSchema = new Schema(
 		products: [
 			{
 				count: { type: Number, required: true },
-				id: { type: String, required: true },
+				_id: { type: String, required: true },
 				name: { type: String, required: true },
 				price: { type: Number, required: true },
 				remain: { type: Number, required: true },
-				userProduct: { type: Number, required: true }
+				userProduct: { type: String, required: true }
 			}
 		],
 		total: { type: Number, required: true }
