@@ -30,7 +30,7 @@ const WhenLogged = ({ cartCount, handleCart, handleSignOut }) => {
 				direction='row'
 				alignItems='center'
 				sx={{ width: { xs: 100, sm: 225, md: 250 } }}>
-				<Link to='/order'>
+				<Link to={`logged/${user.email}/order`}>
 					<Stack
 						alignItems='center'
 						justifyContent={matchState ? 'space-evenly' : 'center'}

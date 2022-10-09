@@ -28,7 +28,7 @@ const ResponsiveAppBar = () => {
 	const [anchorElNav, setAnchorElNav] = useState(null);
 
 	const pages = [
-		{ navName: 'All Products', navLink: '/' },
+		{ navName: 'All Products', navLink: '' },
 		{ navName: 'Personal Data', navLink: 'personalData' },
 		{ navName: 'Your Products', navLink: 'yourProduct' }
 	];

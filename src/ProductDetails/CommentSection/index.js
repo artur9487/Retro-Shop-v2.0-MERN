@@ -20,7 +20,7 @@ import styled from 'styled-components';
 const CommentSection = () => {
 	const {
 		productID,
-		product,
+		productData,
 		user,
 		pathname,
 		fadeIn,
@@ -45,14 +45,14 @@ const CommentSection = () => {
 		const obj = {
 			comment,
 			sender: user.email,
-			receiver: product[0].email,
+			receiver: productData[0].email,
 			productID,
 			date: new Date(),
 			value,
 			type: 'comment',
 			marked: false
 		};
-		dispatch(set_comment_start(obj, pageInfo));
+		dispatch(set_comment_start(obj, pageInfo, user));
 		setComment('');
 		setError(false);
 	};
@@ -96,6 +96,8 @@ const CommentSection = () => {
 							</Typography>
 						) : (
 							comments.map((item, indx) => {
+								const dateData = new Date(item.date);
+
 								return (
 									<Box key={indx}>
 										<ListItem
@@ -122,7 +124,7 @@ const CommentSection = () => {
 														fontFamily: 'Sofia',
 														fontStyle: 'italic'
 													}}
-													primary={moment(item.date.seconds * 1000).format(
+													primary={moment(dateData).format(
 														'MMMM Do YYYY h:mm a'
 													)}
 													secondary={item.sender}
@@ -152,7 +154,7 @@ const CommentSection = () => {
 						)}
 					</List>
 				</div>
-				{user && pathname !== `/yourProduct/${productID}` && (
+				{user && pathname !== `/logged/${user.email}/yourProduct/${productID}` && (
 					<Stack sx={{ mt: 3 }} spacing={2} direction='column'>
 						<CustomTextField
 							InputLabelProps={{

@@ -8,7 +8,6 @@ import {
 	LOG_ERROR,
 	LOG_ERROR_CLEAN
 } from '../types';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 //--------------------REGISTER ACTION SENDING TO SAGA-------------------
 export const register_user_start = (email, password) => ({
@@ -22,19 +21,10 @@ export const login_user_start = (email, password) => ({
 	payload: { email, password }
 });
 
-//--------------------SETTING THE CURRENT USER SENDING TO REDUCER-------------------
-export const set_current_user_end = () => (dispatch) => {
-	const auth = getAuth();
-	onAuthStateChanged(auth, (user) => {
-		if (user) {
-			console.log('user log in');
-			dispatch({ type: SET_CURRENT_USER_END, payload: user });
-		} else {
-			console.log('user not log in');
-			dispatch({ type: SET_CURRENT_USER_END, payload: null });
-		}
-	});
-};
+export const set_current_user_end = (user) => ({
+	type: SET_CURRENT_USER_END,
+	payload: user
+});
 
 //--------------------SENDING SIGN OUT TO REDUCER-------------------
 export const sign_out = {

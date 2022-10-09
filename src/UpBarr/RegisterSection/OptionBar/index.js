@@ -8,7 +8,7 @@ import { MainContext } from '../../../Context';
 import { useLocation } from 'react-router-dom';
 
 const OptionBar = ({ handleCloseNavMenu, pages }) => {
-	const { maxWidth600 } = useContext(MainContext);
+	const { maxWidth600, user } = useContext(MainContext);
 	const { fadeIn, setFade } = useCustomFadeHook();
 	const [matchState, setMatchState] = useState(false);
 
@@ -17,6 +17,8 @@ const OptionBar = ({ handleCloseNavMenu, pages }) => {
 	const { pathname } = location;
 
 	const splitLocation = pathname.split('/');
+
+	const url = splitLocation[splitLocation.length - 1];
 
 	//----------FADE IN LOGIC---------------
 	useEffect(() => {
@@ -38,7 +40,11 @@ const OptionBar = ({ handleCloseNavMenu, pages }) => {
 				<Link
 					key={indx}
 					onClick={handleCloseNavMenu}
-					to={item.navLink}
+					to={
+						item.navLink != ''
+							? `logged/${user.email}/${item.navLink}`
+							: `logged/${user.email}`
+					}
 					className='links'>
 					<Button
 						color='inherit'
@@ -52,9 +58,9 @@ const OptionBar = ({ handleCloseNavMenu, pages }) => {
 							fontFamily: 'Sofia',
 							fontStyle: 'Italic',
 							fontWeight:
-								item.navLink === '/' && pathname === '/'
+								item.navLink === '' && url === user.email
 									? 1000
-									: splitLocation[1] === item.navLink
+									: url === item.navLink
 									? 1000
 									: 100
 						}}>

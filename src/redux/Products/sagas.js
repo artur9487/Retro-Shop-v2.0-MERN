@@ -1,21 +1,6 @@
 /** @format */
 
-import { db } from '../../fireUtil';
 import axios from 'axios';
-import {
-	collection,
-	addDoc,
-	getDocs,
-	deleteDoc,
-	doc,
-	setDoc,
-	query,
-	where,
-	writeBatch,
-	orderBy,
-	limit,
-	startAfter
-} from 'firebase/firestore';
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 import {
 	ADD_ORDER,
@@ -25,7 +10,6 @@ import {
 	UPDATE_PRODUCT,
 	FETCH_MY_PRODUCTS_START,
 	FETCH_ORDERS,
-	FETCH_PURCHASES,
 	GET_PRODUCT_NUMBER
 } from '../types';
 import {
@@ -33,18 +17,19 @@ import {
 	fetch_my_products_start,
 	fetch_orders,
 	fetch_products,
-	fetch_purchases,
 	fetch_purchases_end,
 	get_product_number_end,
 	set_product_end
 } from './actions';
+import { fetch_notyfication_end } from '../UI/actions';
 import { add_order_end } from './actions';
 
 //----------------ADD YOUR PRODUCT------------------------------
 export function* setProductStart({ payload }) {
 	try {
+		const { email } = payload;
 		yield axios
-			.post('http://localhost:5000/yourProduct', payload)
+			.post(`http://localhost:5000/logged/${email}/yourProduct`, payload)
 			.then(() => console.log('Product Added'));
 		yield put(fetch_my_products_start(payload.email));
 	} catch (e) {
@@ -60,10 +45,22 @@ export function* onSetProduct() {
 export function* fetchProducts({ payload }) {
 	try {
 		let querySnapshot;
+		let response;
 
-		const response = yield axios.get('http://localhost:5000', {
-			params: { pageNumber: payload.page, nPerPage: payload.limit }
-		});
+		if (payload.user) {
+			const { email } = payload.user;
+
+			response = yield axios.get(`http://localhost:5000/logged/${email}`, {
+				params: { pageNumber: payload.page, nPerPage: payload.limit }
+			});
+			const notyfications = response.data.notyfications;
+			yield put(fetch_notyfication_end(notyfications));
+		} else {
+			response = yield axios.get('http://localhost:5000/', {
+				params: { pageNumber: payload.page, nPerPage: payload.limit }
+			});
+		}
+
 		querySnapshot = response.data;
 
 		let newDoc2 = 0;
@@ -86,8 +83,9 @@ export function* onfetchProducts() {
 //----------------DELETE YOUR OWN PRODUCT---------
 export function* deleteProductStart({ payload }) {
 	try {
+		const { email } = payload;
 		yield axios
-			.delete('http://localhost:5000/yourProduct', {
+			.delete(`http://localhost:5000/logged/${email}/yourProduct`, {
 				params: { id: payload.id }
 			})
 			.then(() => console.log('Product deleted'));
@@ -104,13 +102,12 @@ export function* onDeleteProduct() {
 //-----------UPDATE YOUR OWN PRODUCT--------------
 export function* updateProductStart({ payload }) {
 	try {
-		console.log(payload);
+		const { email } = payload.product;
 		yield axios
-			.put('http://localhost:5000/yourProduct', payload)
+			.put(`http://localhost:5000/logged/${email}/yourProduct`, payload)
 			.then(() => console.log('Product updated'));
 
-		//yield setDoc(doc(db, 'Products', payload.id), payload.product);
-		yield put(fetch_my_products_start(payload.product.email));
+		yield put(fetch_my_products_start(email));
 	} catch (e) {
 		console.error('Error adding document: ', e);
 	}
@@ -122,7 +119,9 @@ export function* onUpdateProduct() {
 
 //------------ADD THE ORDERS TO NOTYFICATIONS----------
 export function* orderNotyfication(payload) {
-	const { email, date } = payload;
+	const order = payload;
+	const { email, date } = order;
+
 	try {
 		let newArr = [];
 		for (let i = 0; i < payload.products.length; i++) {
@@ -135,16 +134,16 @@ export function* orderNotyfication(payload) {
 						{
 							count: payload.products[i].count,
 							name: payload.products[i].name,
-							id: payload.products[i].id,
+							_id: payload.products[i]._id,
 							price: payload.products[i].price
 						}
 					],
 					buyer: email,
 					date,
 					receiver: payload.products[i].userProduct,
-					type: 'order',
 					marked: false,
-					total: payload.products[i].price
+					total: Number(payload.products[i].price),
+					type: 'order'
 				});
 			} else {
 				newArr[index] = {
@@ -154,19 +153,21 @@ export function* orderNotyfication(payload) {
 						{
 							count: payload.products[i].count,
 							name: payload.products[i].name,
-							id: payload.products[i].id,
+							_id: payload.products[i]._id,
 							price: payload.products[i].price
 						}
 					],
-					total: newArr[index].total + payload.products[i].price
+					total: Number(newArr[index].total) + payload.products[i].price
 				};
 			}
 		}
 
-		/*newArr.forEach((item) => {
-			const nycRef = doc(db, 'Notyfications', `${Math.random()}`);
-			batch.set(nycRef, item);
-		});*/
+		yield axios
+			.post(`http://localhost:5000/logged/${email}/order`, {
+				order: order,
+				newArr: newArr
+			})
+			.then(() => console.log('Order notyfication added'));
 	} catch (err) {
 		console.log(err);
 	}
@@ -181,11 +182,6 @@ export function* addOrderStart({ payload }) {
 			order: { products, email },
 			pageInfo: { limit, page }
 		} = payload;
-		console.log(order);
-
-		yield axios
-			.post('http://localhost:5000/order', order)
-			.then(() => console.log('Product ordered'));
 
 		let deleteDocuments = [];
 		let updateDocuments = [];
@@ -200,7 +196,7 @@ export function* addOrderStart({ payload }) {
 
 		if (deleteDocuments.length > 0) {
 			yield axios
-				.delete('http://localhost:5000/order', {
+				.delete(`http://localhost:5000/logged/${email}/order`, {
 					params: {
 						deleteDocuments
 					}
@@ -209,22 +205,19 @@ export function* addOrderStart({ payload }) {
 				.catch((err) => console.log(`${err} occured`));
 		}
 
-		console.log(updateDocuments);
-
 		if (updateDocuments.length > 0) {
 			yield axios
-				.put('http://localhost:5000/order', updateDocuments)
+				.put(`http://localhost:5000/logged/${email}/order`, updateDocuments)
 				.then(() => console.log('Some products updated'))
 				.catch((err) => console.log(`${err} occured`));
 		}
 
 		yield put(fetch_orders(email));
 		yield put(fetch_my_products_start(email));
-		yield put(fetch_purchases(email));
 		yield put(fetch_products(limit, page));
-		//	yield* orderNotyfication(order);
+		yield* orderNotyfication(order);
 	} catch (e) {
-		console.error('Error adding document: ', e);
+		console.error(e);
 	}
 }
 export function* onAddOrder() {
@@ -233,15 +226,20 @@ export function* onAddOrder() {
 
 //--------------------FETCH AN ORDER-----------------
 export function* fetchOrders({ payload }) {
-	const response = yield axios.get('http://localhost:5000/personalData', {
-		params: { user: payload }
-	});
+	try {
+		const user = payload;
+		const response = yield axios.get(
+			`http://localhost:5000/logged/${user}/personalData`
+		);
 
-	const orders = response.data;
+		const querySnapshot = response.data.orders;
+		const querySnapshot2 = response.data.notyfications;
 
-	console.log(orders);
-
-	yield put(add_order_end(orders));
+		yield put(add_order_end(querySnapshot));
+		yield put(fetch_purchases_end(querySnapshot2));
+	} catch (e) {
+		console.log(e);
+	}
 }
 
 export function* onFetchOrders() {
@@ -250,37 +248,21 @@ export function* onFetchOrders() {
 
 //--------------FETCH YOUR OWN PRODUCTS----------------
 export function* fetchMyProductsStart({ payload }) {
-	const response = yield axios.get('http://localhost:5000/yourProduct', {
-		params: { email: payload }
-	});
-	const querySnapshot = response.data;
+	try {
+		const user = payload;
+		const response = yield axios.get(
+			`http://localhost:5000/logged/${user}/yourProduct`
+		);
+		const querySnapshot = response.data;
 
-	yield put(fetch_my_products_end(querySnapshot));
+		yield put(fetch_my_products_end(querySnapshot));
+	} catch (e) {
+		console.log(e);
+	}
 }
 
 export function* onFetchMyProducts() {
 	yield takeLatest(FETCH_MY_PRODUCTS_START, fetchMyProductsStart);
-}
-
-//---------------FETCH THE PRODUCTS WHICH WERE BUYED BY OTHERS------------
-export function* fetchPurhases({ payload }) {
-	const q = query(
-		collection(db, 'Notyfications'),
-		where('receiver', '==', payload),
-		where('type', '==', 'order'),
-		limit(10),
-		orderBy('date', 'desc')
-	);
-	const querySnapshot = yield getDocs(q);
-	let newDoc = [];
-	querySnapshot.forEach((doc) => {
-		newDoc.push({ ...doc.data(), id: doc.id });
-	});
-	yield put(fetch_purchases_end(newDoc));
-}
-
-export function* onFetchPurchases() {
-	yield takeLatest(FETCH_PURCHASES, fetchPurhases);
 }
 
 //---------------GET THE NUMBER OF THE PRODUCTS FOR THE PAGINATION------------
@@ -308,7 +290,6 @@ export default function* productSagas() {
 		call(onAddOrder),
 		call(onFetchMyProducts),
 		call(onFetchOrders),
-		call(onFetchPurchases),
 		call(onGetProductNumber)
 	]);
 }

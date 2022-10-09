@@ -27,15 +27,25 @@ const ProductDetails = () => {
 	const params = useParams();
 	const { productID } = params;
 	const proProduct = useSelector((state) => state.productsData.products);
+	const myProducts = useSelector((state) => state.productsData.myProducts);
 	const [open, setOpen] = useState(false);
 	const [count, setCount] = useState(0);
 	const { fadeIn, setFade } = useCustomFadeHook();
 	const [error, setError] = useState(false);
+	const [orderCountError, setOrderCountError] = useState(false);
 
 	const location = useLocation();
 	const { pathname } = location;
 
-	const product = proProduct.filter((item) => {
+	let productDataArr;
+
+	if (pathname !== `/logged/${user.email}/yourProduct/${productID}`) {
+		productDataArr = proProduct;
+	} else {
+		productDataArr = myProducts;
+	}
+
+	const productData = productDataArr.filter((item) => {
 		return item._id === productID;
 	});
 
@@ -48,7 +58,7 @@ const ProductDetails = () => {
 	//---------------------FETCHING THE COMMENTS----------------------
 	useEffect(() => {
 		setOpen(true);
-		dispatch(fetch_comments_start(productID));
+		dispatch(fetch_comments_start(productID, user));
 		return () => {
 			setOpen(false);
 		};
@@ -59,22 +69,27 @@ const ProductDetails = () => {
 		setOpen(false);
 		navigate(-1);
 		setError(false);
+		setOrderCountError(false);
 	};
 
 	//---------------------ADDING TO CART------------------------
 	const handleAdd = () => {
-		dispatch(add_to_cart(productID, count, 'dashboard'));
-		handleClose();
+		if (count <= 0 || count > productData[0].productQuantity) {
+			setOrderCountError(true);
+		} else {
+			dispatch(add_to_cart(productID, count, 'dashboard'));
+			handleClose();
+		}
 	};
-	//---------------------------------------------
 
 	return (
 		<>
 			<Context.Provider
 				value={{
+					orderCountError,
 					maxWidth600,
 					pathname,
-					product,
+					productData,
 					productID,
 					handleAdd,
 					count,

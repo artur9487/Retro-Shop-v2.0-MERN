@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { MainContext } from '../../../Context';
 
 const LogoWide = () => {
-	const { maxWidth600 } = useContext(MainContext);
+	const { maxWidth600, user } = useContext(MainContext);
 	const navigate = useNavigate();
 	const { fadeIn, setFade } = useCustomFadeHook();
 	const [matchState, setMatchState] = useState(false);
@@ -18,9 +18,18 @@ const LogoWide = () => {
 		setMatchState(!maxWidth600);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [maxWidth600]);
+
+	const handleNav = () => {
+		if (user) {
+			navigate(`/logged/${user.email}`);
+		} else {
+			navigate(`/`);
+		}
+	};
+
 	return (
 		<Typography
-			onClick={() => navigate('/')}
+			onClick={handleNav}
 			className={fadeIn}
 			variant='h5'
 			noWrap

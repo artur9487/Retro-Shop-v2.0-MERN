@@ -14,7 +14,8 @@ import { MainContext } from '../../Context';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const ProductLayout = () => {
-	const { maxWidth1200, maxWidth900, maxWidth600 } = useContext(MainContext);
+	const { maxWidth1200, maxWidth900, maxWidth600, user } =
+		useContext(MainContext);
 	const dispatch = useDispatch();
 	const products = useSelector((state) => state.productsData);
 	const { fadeIn, setFade } = useCustomFadeHook();
@@ -45,7 +46,7 @@ const ProductLayout = () => {
 			limit = 6 * (page - 1);
 		}
 
-		dispatch(fetch_products(limit, page));
+		dispatch(fetch_products(limit, page, user));
 	}, [dispatch, page]);
 	//----------------------------------------------------------------------------
 

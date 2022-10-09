@@ -1,7 +1,6 @@
 /** @format */
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -12,6 +11,7 @@ import { getStorage } from 'firebase/storage';
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_API_KEY,
 	authDomain: 'sweet-corner-shop.firebaseapp.com',
+	databaseURL: 'https://sweet-corner-shop-default-rtdb.firebaseio.com',
 	projectId: 'sweet-corner-shop',
 	storageBucket: 'sweet-corner-shop.appspot.com',
 	messagingSenderId: '369614338288',
@@ -20,8 +20,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-
 export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);

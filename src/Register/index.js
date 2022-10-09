@@ -45,7 +45,7 @@ const Register = () => {
 			if (logError) {
 				return;
 			} else {
-				navigate('/');
+				navigate(`/logged/${user.email}`);
 			}
 		}
 	}, [logError, user, navigate]);

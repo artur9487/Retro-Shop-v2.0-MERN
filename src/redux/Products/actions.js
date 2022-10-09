@@ -7,7 +7,6 @@ import {
 	SET_PRODUCT_START,
 	CART_DOWN,
 	FETCH_ORDERS,
-	FETCH_PURCHASES,
 	FETCH_PURCHASES_END,
 	GET_PRODUCT_NUMBER,
 	GET_PRODUCT_NUMBER_END,
@@ -48,9 +47,9 @@ export const update_product_start = (id, product) => ({
 });
 
 //---------------FETCH PRODUCTS FOR A SINGLE PAGE TO SAGA---------------------
-export const fetch_products = (limit, page) => ({
+export const fetch_products = (limit, page, user) => ({
 	type: FETCH_PROUCTS,
-	payload: { limit, page }
+	payload: { limit, page, user }
 });
 
 //-----------------FETCH MY PERSONAL PRODUCTS TO SAGA----------------------------
@@ -99,12 +98,6 @@ export const cart_down = (id) => ({
 export const fetch_orders = (email) => ({
 	type: FETCH_ORDERS,
 	payload: email
-});
-
-//--------------------FETCH ALL YOUR PRODUCTS WHICH WERE BUYED TO SAGA-----------------------
-export const fetch_purchases = (productUser) => ({
-	type: FETCH_PURCHASES,
-	payload: productUser
 });
 
 //-----------------------RECEIVE THE DATA ABOUT YOUR PRODUCTS WCHICH WERE BUYED FROM SAGA TO REDUCER-------

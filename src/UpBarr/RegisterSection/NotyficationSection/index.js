@@ -37,18 +37,19 @@ const NotyficationSection = () => {
 	//---------------CLOSING THE MENU WILL SET THE NOTYFICATIONS TO UNMARKED----
 	const handleClose = () => {
 		setAnchorEl(null);
-		dispatch(set_marked(notIds, email));
+		dispatch(set_marked(notIdsOrders, notIdsComments, email));
 	};
 
-	//--------FETCH THE NOTYFICATIONS------------
-	useEffect(() => {
-		dispatch(fetch_notyfication_start(email));
-	}, [comments, myProducts, dispatch, email]);
-	//-------------------------------
 	let count = 0;
-	let notIds = [];
+	let notIdsOrders = [];
+	let notIdsComments = [];
 	const notData = noty.map((item, indx) => {
-		notIds.push(item.id);
+		if (item.type === 'commnent') {
+			notIdsComments.push(item._id);
+		} else {
+			notIdsOrders.push(item._id);
+		}
+
 		if (item.marked === false) {
 			count++;
 		}
@@ -56,7 +57,7 @@ const NotyficationSection = () => {
 			return (
 				<MenuItem
 					onClick={() => {
-						navigate(`/yourProduct/${item.productID}`);
+						navigate(`/logged/${email}/yourProduct/${item.productID}`);
 						handleClose();
 					}}
 					key={indx}
@@ -84,7 +85,7 @@ const NotyficationSection = () => {
 			return (
 				<MenuItem
 					onClick={() => {
-						navigate('/personalData');
+						navigate(`/logged/${email}/personalData`);
 						handleClose();
 					}}
 					key={indx}

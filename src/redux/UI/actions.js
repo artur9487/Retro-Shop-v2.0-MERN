@@ -21,15 +21,15 @@ export const toogle_cart = {
 };
 
 //--------------SET A COMMENT TO SAGA--------------
-export const set_comment_start = (obj, pageInfo) => ({
+export const set_comment_start = (obj, pageInfo, user) => ({
 	type: SET_COMMENT_START,
-	payload: { obj, pageInfo }
+	payload: { obj, pageInfo, user }
 });
 
 //--------------FETCH THE COMMENTS TO SAGA-----------------
-export const fetch_comments_start = (productID) => ({
+export const fetch_comments_start = (productID, user) => ({
 	type: FETCH_COMMENT_START,
-	payload: productID
+	payload: { productID, user }
 });
 
 //------------RECEIVE THE DATA FROM SAGA TO REDUCER-------
@@ -51,9 +51,9 @@ export const fetch_notyfication_end = (result) => ({
 });
 
 //-------------SET THAT THE NOTYFICATIONS WERE SEEN TO SAGA---
-export const set_marked = (ids, receiver) => ({
+export const set_marked = (notIdsOrders, notIdsComments, receiver) => ({
 	type: SET_MARKED,
-	payload: { ids, receiver }
+	payload: { notIdsOrders, notIdsComments, receiver }
 });
 
 //---------------SETTING THE PAGE COUNT-----------

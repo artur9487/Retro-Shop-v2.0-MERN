@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { Context } from '../../Context';
 import { Rating } from '@mui/material';
@@ -10,16 +10,17 @@ import styled from 'styled-components';
 const ProductSection = () => {
 	const {
 		maxWidth600,
-		product,
+		productData,
 		handleAdd,
 		count,
 		setCount,
 		user,
 		fadeIn,
 		pathname,
-		productID
+		productID,
+		orderCountError
 	} = useContext(Context);
-
+	const [fadeIn2, setFadeIn2] = useState('noFade');
 	const OleoFont = 'Oleo Script Swash Caps';
 
 	const {
@@ -31,7 +32,7 @@ const ProductSection = () => {
 		productQuantity,
 		email,
 		category
-	} = product[0];
+	} = productData[0];
 
 	//---------------FIXING THE RATING VALUE-----------
 	const fixedNum = Math.round(ratingValue * 2) / 2;
@@ -56,6 +57,24 @@ const ProductSection = () => {
 		{ data1: 'Category: ', data2: category },
 		{ data1: 'Price: ', data2: `${productPrice}$` }
 	];
+
+	//----------------------FADE VALIADATION MESSAGE FUNCTION----------------
+	useEffect(() => {
+		if (orderCountError) {
+			setTimeout(
+				() => {
+					setFadeIn2('fadeIn');
+				},
+				500,
+				true
+			);
+		} else {
+			setFadeIn2('noFade');
+		}
+		return () => {
+			setFadeIn2('noFade');
+		};
+	}, [orderCountError]);
 
 	return (
 		<Stack
@@ -92,7 +111,7 @@ const ProductSection = () => {
 					of {ratingCount} ratings
 				</Typography>
 			</Stack>
-			{user && pathname !== `/yourProduct/${productID}` && (
+			{user && pathname !== `/logged/${user.email}/yourProduct/${productID}` && (
 				<>
 					<Stack direction='row' alignItems='center' spacing={2}>
 						<CustomTextField
@@ -111,6 +130,14 @@ const ProductSection = () => {
 							from {productQuantity} pieces
 						</Typography>
 					</Stack>
+					{orderCountError && (
+						<Typography
+							textAlign='center'
+							className={fadeIn2}
+							sx={{ fontFamily: 'Sofia', fontSize: 18, color: 'red' }}>
+							Invalid order count
+						</Typography>
+					)}
 					<Stack direction='row' justifyContent='center'>
 						<Button
 							color='inherit'

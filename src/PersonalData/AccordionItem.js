@@ -16,6 +16,7 @@ const AccordionItem = ({ item, indx }) => {
 	const handleChange = (panel) => (event, isExpanded) => {
 		setExpanded(isExpanded ? panel : false);
 	};
+	const dateData = new Date(item.date);
 	return (
 		<Accordion
 			sx={{ width: 300 }}
@@ -37,9 +38,7 @@ const AccordionItem = ({ item, indx }) => {
 								fontSize: 12,
 								fontFamily: 'Sofia'
 							}}>
-							{moment(new Date(item.date.seconds * 1000)).format(
-								'MMMM Do YYYY, h:mm:ss a'
-							)}
+							{moment(new Date(dateData)).format('MMMM Do YYYY, h:mm:ss a')}
 						</Typography>
 						<Stack direction='row' spacing={1} alignItems='center'>
 							<Typography sx={{ fontFamily: 'Sofia' }} variant='body1'>

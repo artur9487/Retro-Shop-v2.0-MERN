@@ -42,13 +42,13 @@ const CartLayout = () => {
 
 	if (user) {
 		const { email } = user;
-		console.log(state2);
+
 		const total = state2.reduce((one, two) => {
 			return (one + Number(two.productPrice)).toFixed(2);
 		}, 0);
 
 		const handleCart = () => {
-			navigate('/');
+			navigate(-1);
 			dispatch(toogle_cart);
 			dispatch(cleart_cart_count);
 		};

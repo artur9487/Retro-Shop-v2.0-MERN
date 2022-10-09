@@ -33,6 +33,15 @@ const LogoNarrow = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [maxWidth600]);
 	//------------------------
+
+	const handleNav = () => {
+		if (user) {
+			navigate(`/logged/${user.email}`);
+		} else {
+			navigate('/');
+		}
+	};
+
 	return (
 		<Stack
 			className={fadeIn}
@@ -69,7 +78,9 @@ const LogoNarrow = ({
 						onClose={handleCloseNavMenu}>
 						{pages.map((page, indx) => (
 							<MenuItem key={indx} onClick={handleCloseNavMenu}>
-								<Link to={page.navLink} className='links'>
+								<Link
+									to={`logged/${user.email}/${page.navLink}`}
+									className='links'>
 									<Typography
 										sx={{ color: 'black', fontFamily: 'Sofia', fontSize: 20 }}
 										textAlign='center'>
@@ -82,7 +93,7 @@ const LogoNarrow = ({
 				</Box>
 			) : null}
 			<Typography
-				onClick={() => navigate('/')}
+				onClick={handleNav}
 				className='text'
 				variant='h5'
 				noWrap

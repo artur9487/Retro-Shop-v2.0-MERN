@@ -11,10 +11,14 @@ import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
 import './index.scss';
 import { Stack } from '@mui/material';
+import { MainContext } from '../../../Context';
+import { useContext } from 'react';
 
 const ProductItem = (item) => {
 	const navigate = useNavigate();
 	const { productName, productPrice, _id, image } = item;
+
+	const { user } = useContext(MainContext);
 
 	return (
 		<Card className='boxek' sx={{ width: 250, height: 350, margin: 1 }}>
@@ -43,7 +47,7 @@ const ProductItem = (item) => {
 					<Button
 						color='inherit'
 						sx={{ color: 'black', bg: 'black', textTransform: 'none' }}
-						onClick={() => navigate(`/${_id}`)}>
+						onClick={() => navigate(`${_id}`)}>
 						<Typography
 							sx={{
 								color: 'black',

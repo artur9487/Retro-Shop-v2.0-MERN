@@ -1,7 +1,7 @@
 /** @format */
 
 import './App.scss';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import AllProducts from './Layout';
 import MyProducts from './myProductLayout';
 import LayoutWithCart from './LayoutWithCart';
@@ -16,6 +16,11 @@ import { MainContext } from './Context';
 import { useMediaQuery } from '@mui/material';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/styles';
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { set_current_user_end, sign_out } from './redux/Auth/actions';
+import { useEffect, useState } from 'react';
 
 function App() {
 	const theme = createTheme({
@@ -25,10 +30,36 @@ function App() {
 			}
 		}
 	});
+	const dispatch = useDispatch();
 	const user = useSelector((state) => state.AuthData.user);
 	const maxWidth1200 = useMediaQuery('(max-width:1199px)');
 	const maxWidth900 = useMediaQuery('(max-width:899px)');
 	const maxWidth600 = useMediaQuery('(max-width:599px)');
+	const navigate = useNavigate();
+
+	axios.defaults.baseURL = 'http://localhost:3000';
+	const [isAuthorized, setIsAuthorized] = useState(false);
+
+	useEffect(() => {
+		const token = localStorage.FBIdToken;
+		const userStorage = localStorage.user;
+		const userData = { email: userStorage };
+		if (token) {
+			const decodedToken = jwtDecode(token);
+			if (decodedToken.exp * 1000 < Date.now()) {
+				dispatch(sign_out);
+				navigate(`/`);
+				setIsAuthorized(false);
+			} else {
+				if (!userData) {
+					dispatch(set_current_user_end(userData));
+				}
+				axios.defaults.headers.common['Authorization'] = token;
+				setIsAuthorized(true);
+			}
+		}
+	}, [navigate, user]);
+
 	return (
 		<ThemeProvider theme={theme}>
 			<MainContext.Provider
@@ -42,38 +73,77 @@ function App() {
 					<Routes>
 						<Route path='/' element={<CompleteApp />}>
 							<Route
+								exact
 								path='/'
 								element={
 									<LayoutWithCart>
 										<AllProducts />
 									</LayoutWithCart>
 								}>
-								<Route path=':productID' element={<ProductDetails />} />
+								<Route exact path=':productID' element={<ProductDetails />} />
 							</Route>
 							<Route
-								path='/order'
+								exact
+								path='logged/:user'
 								element={
-									<LayoutWithCart>
-										<AllProducts />
-									</LayoutWithCart>
+									isAuthorized ? (
+										<LayoutWithCart>
+											<AllProducts />
+										</LayoutWithCart>
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+							<Route
+								exact
+								path='logged/:user/:productID'
+								element={
+									isAuthorized ? (
+										<ProductDetails />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+
+							<Route
+								path='logged/:user/order'
+								element={
+									isAuthorized ? (
+										<LayoutWithCart>
+											<AllProducts />
+										</LayoutWithCart>
+									) : (
+										<Navigate replace to='/login' />
+									)
 								}></Route>
 							<Route
-								path='yourProduct'
+								path='logged/:user/yourProduct'
 								element={
-									<LayoutWithCart>
-										<MyProducts />
-									</LayoutWithCart>
+									isAuthorized ? (
+										<LayoutWithCart>
+											<MyProducts />
+										</LayoutWithCart>
+									) : (
+										<Navigate replace to='/login' />
+									)
 								}>
 								<Route path=':productID' element={<ProductDetails />} />
 							</Route>
 							<Route
-								path='personalData'
+								path='logged/:user/personalData'
 								element={
-									<LayoutWithCart>
-										<PersonalData />
-									</LayoutWithCart>
+									isAuthorized ? (
+										<LayoutWithCart>
+											<PersonalData />
+										</LayoutWithCart>
+									) : (
+										<Navigate replace to='/login' />
+									)
 								}
 							/>
+
 							<Route path='Login' element={<Login />} />
 							<Route path='Register' element={<Register />} />
 						</Route>

@@ -10,7 +10,7 @@ import Footer from '../Footer';
 import '../globalVariables.scss';
 import { MainContext } from '../Context.js';
 import { useDispatch } from 'react-redux';
-import { fetch_orders, fetch_purchases } from '../redux/Products/actions';
+import { fetch_orders } from '../redux/Products/actions';
 
 const PersonalData = () => {
 	const {
@@ -25,7 +25,6 @@ const PersonalData = () => {
 	//--------------FETCHING DATA LOGIC-----------------
 	useEffect(() => {
 		dispatch(fetch_orders(email));
-		dispatch(fetch_purchases(email));
 	}, [dispatch, email]);
 	//--------------FADE IN LOGIC-----------------
 	useEffect(() => {

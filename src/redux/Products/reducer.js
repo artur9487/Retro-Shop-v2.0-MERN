@@ -93,7 +93,7 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
 					count2 = proCart[indx].count + 1;
 				}
 			}
-			console.log(proCart);
+
 			return {
 				...state,
 				cart: [...proCart],

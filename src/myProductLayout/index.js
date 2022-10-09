@@ -334,72 +334,78 @@ const MyProducts = () => {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{prod.map((row, indx) => (
-											<TableRow
-												key={indx}
-												sx={{
-													'&:last-child td, &:last-child th': { border: 0 }
-												}}>
-												<TableCell
-													sx={{ fontFamily: 'Sofia', fontSize: 13 }}
-													align='center'>
-													{indx + 1}.
-												</TableCell>
-												<TableCell
-													sx={{ fontFamily: 'Sofia', fontSize: 13 }}
-													align='center'>
-													{moment(row.date.seconds * 1000).format(
-														'MMM Do YY, h:mm'
+										{prod.map((row, indx) => {
+											const dateData = new Date(row.date);
+											console.log(dateData);
+											return (
+												<TableRow
+													key={indx}
+													sx={{
+														'&:last-child td, &:last-child th': { border: 0 }
+													}}>
+													<TableCell
+														sx={{ fontFamily: 'Sofia', fontSize: 13 }}
+														align='center'>
+														{indx + 1}.
+													</TableCell>
+													<TableCell
+														sx={{ fontFamily: 'Sofia', fontSize: 13 }}
+														align='center'>
+														{moment(dateData).format('MMM Do YY, h:mm a')}
+													</TableCell>
+													<TableCell
+														sx={{ fontFamily: 'Sofia', fontSize: 17 }}
+														align='center'>
+														{row.productName}
+													</TableCell>
+													{matchState && (
+														<>
+															<TableCell
+																sx={{ fontFamily: 'Sofia', fontSize: 13 }}
+																align='center'>
+																{row.productPrice}$
+															</TableCell>
+															<TableCell
+																sx={{ fontFamily: 'Sofia', fontSize: 17 }}
+																align='center'>
+																{row.category}
+															</TableCell>
+															<TableCell
+																sx={{ fontFamily: 'Sofia', fontSize: 13 }}
+																align='center'>
+																{row.productQuantity}
+															</TableCell>
+														</>
 													)}
-												</TableCell>
-												<TableCell
-													sx={{ fontFamily: 'Sofia', fontSize: 17 }}
-													align='center'>
-													{row.productName}
-												</TableCell>
-												{matchState && (
-													<>
-														<TableCell
-															sx={{ fontFamily: 'Sofia', fontSize: 13 }}
-															align='center'>
-															{row.productPrice}$
-														</TableCell>
-														<TableCell
-															sx={{ fontFamily: 'Sofia', fontSize: 17 }}
-															align='center'>
-															{row.category}
-														</TableCell>
-														<TableCell
-															sx={{ fontFamily: 'Sofia', fontSize: 13 }}
-															align='center'>
-															{row.productQuantity}
-														</TableCell>
-													</>
-												)}
-												<TableCell align='center'>
-													<Tooltip title='See Details'>
-														<IconButton
-															onClick={() =>
-																navigate(`/yourProduct/${row._id}`)
-															}>
-															<DirectionsIcon />
-														</IconButton>
-													</Tooltip>
-													<Tooltip title='Update'>
-														<IconButton
-															onClick={() => handleUpdate(row._id, 'update')}>
-															<BorderColorIcon />
-														</IconButton>
-													</Tooltip>
-													<Tooltip title='Remove'>
-														<IconButton
-															onClick={() => handleDelete(row._id, row.email)}>
-															<RemoveCircleIcon />
-														</IconButton>
-													</Tooltip>
-												</TableCell>
-											</TableRow>
-										))}
+													<TableCell align='center'>
+														<Tooltip title='See Details'>
+															<IconButton
+																onClick={() =>
+																	navigate(
+																		`/logged/${email}/yourProduct/${row._id}`
+																	)
+																}>
+																<DirectionsIcon />
+															</IconButton>
+														</Tooltip>
+														<Tooltip title='Update'>
+															<IconButton
+																onClick={() => handleUpdate(row._id, 'update')}>
+																<BorderColorIcon />
+															</IconButton>
+														</Tooltip>
+														<Tooltip title='Remove'>
+															<IconButton
+																onClick={() =>
+																	handleDelete(row._id, row.email)
+																}>
+																<RemoveCircleIcon />
+															</IconButton>
+														</Tooltip>
+													</TableCell>
+												</TableRow>
+											);
+										})}
 									</TableBody>
 								</Table>
 							</TableContainer>
