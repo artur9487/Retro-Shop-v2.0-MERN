@@ -69,7 +69,6 @@ const MyProducts = () => {
 
 	useEffect(() => {
 		setImage(currentImage);
-		console.log(currentImage);
 	}, [currentImage]);
 
 	//---------------FADING FUNC--------------------
@@ -339,7 +338,7 @@ const MyProducts = () => {
 									<TableBody>
 										{prod.map((row, indx) => {
 											const dateData = new Date(row.date);
-											console.log(dateData);
+
 											return (
 												<TableRow
 													key={indx}

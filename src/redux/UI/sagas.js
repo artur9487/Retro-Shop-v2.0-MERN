@@ -61,6 +61,7 @@ export function* onFetchCommentsStart() {
 
 //-----------------SETTING THE RIGHT DATA OF THE NOTYFICATION DATA WHICH WERE READ--
 export function* setMarked({ payload }) {
+	console.log(payload);
 	const { notIdsOrders, notIdsComments, receiver } = payload;
 
 	let endpoints = [
@@ -78,8 +79,8 @@ export function* setMarked({ payload }) {
 				})
 			)
 		);
-
-		yield put(fetch_notyfication_end(notyfications));
+		console.log(notyfications[0].data.notyfications);
+		yield put(fetch_notyfication_end(notyfications[0].data.notyfications));
 	} catch (err) {
 		console.log(err);
 	}

@@ -11,13 +11,12 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { set_marked } from '../../../redux/UI/actions';
 
-const NotyficationData = () => {
+const NotyficationData = ({ count }) => {
 	const {
 		maxWidth600,
 		user: { email }
 	} = useContext(MainContext);
-	const { setAnchorEl, open, anchorEl, count } =
-		useContext(NotyficationContext);
+	const { setAnchorEl, open, anchorEl } = useContext(NotyficationContext);
 	const noty = useSelector((state) => state.UIData.notyfications);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();

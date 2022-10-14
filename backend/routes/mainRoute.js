@@ -23,7 +23,7 @@ const {
 exports.postNewProductImage = (req, res) => {
 	const storage = getStorage();
 	const file = req.file;
-	console.log(req.file);
+
 	const timestamp = Date.now();
 	const name = file.originalname.split('.')[0];
 	const type = file.originalname.split('.')[1];
@@ -35,7 +35,6 @@ exports.postNewProductImage = (req, res) => {
 		})
 		.then(() => {
 			getDownloadURL(storageRef).then((url) => {
-				console.log(url);
 				return res.json(url);
 			});
 		})
@@ -295,6 +294,7 @@ const markingFunction = (notIdsOrders, notIdsComments, user) => {
 exports.markNotyfications = (req, res) => {
 	const { user } = req.params;
 	const { notIdsOrders, notIdsComments } = req.body;
+	console.log(notIdsOrders, notIdsComments);
 	CommentNotyfication.bulkWrite(
 		notIdsComments.map((id) => {
 			return {
@@ -328,7 +328,7 @@ exports.markNotyfications = (req, res) => {
 					let notyfications = comments.concat(orders);
 					notyfications.sort((a, b) => b.date - a.date);
 					const notyfication10 = notyfications.slice(0, 10);
-
+					console.log(notyfication10);
 					return res.json({
 						notyfications: notyfication10
 					});

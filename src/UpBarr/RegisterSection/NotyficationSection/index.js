@@ -48,7 +48,7 @@ const NotyficationSection = () => {
 	}, [open]);
 
 	let count = 0;
-	/*let notIdsOrders = [];
+	let notIdsOrders = [];
 	let notIdsComments = [];
 	//---------------CLOSING THE MENU WILL SET THE NOTYFICATIONS TO UNMARKED----
 	const handleClose = (productID, type) => {
@@ -63,17 +63,14 @@ const NotyficationSection = () => {
 		dispatch(set_marked(notIdsOrders, notIdsComments, email));
 	};
 
-	
-	
 	const notData = noty.map((item, indx) => {
-		if (item.type === 'commnent') {
-			notIdsComments.push(item._id);
-		} else {
-			notIdsOrders.push(item._id);
-		}
-
 		if (item.marked === false) {
 			count++;
+			if (item.type === 'comment') {
+				notIdsComments.push(item._id);
+			} else {
+				notIdsOrders.push(item._id);
+			}
 		}
 		if (item.type === 'comment') {
 			return (
@@ -131,7 +128,7 @@ const NotyficationSection = () => {
 			);
 		}
 	});
-*/
+
 	return (
 		<>
 			<Tooltip title='Open Notyfications'>
@@ -151,7 +148,31 @@ const NotyficationSection = () => {
 					open,
 					anchorEl
 				}}>
-				<NotyficationData />
+				<Menu
+					id='basic-menu'
+					anchorEl={anchorEl}
+					open={open}
+					onClose={handleClose}
+					MenuListProps={{
+						'aria-labelledby': 'basic-button'
+					}}
+					PaperProps={{
+						style: {
+							maxHeight: '30ch',
+							width: '45ch'
+						}
+					}}>
+					{noty.length === 0 ? (
+						<Typography
+							textAlign='center'
+							sx={{ fontFamily: 'Sofia', fontSize: 18 }}
+							variant='body2'>
+							No notyfication yet
+						</Typography>
+					) : (
+						notData
+					)}
+				</Menu>
 			</NotyficationContext.Provider>
 		</>
 	);
