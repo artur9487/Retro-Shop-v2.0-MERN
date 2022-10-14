@@ -1,56 +1,27 @@
 /** @format */
 
-import React, { useEffect, useContext, useState } from 'react';
-import { IconButton, Stack, Typography, Box } from '@mui/material';
-import { Badge } from '@mui/material';
-import BookmarksIcon from '@mui/icons-material/Bookmarks';
-import { useDispatch } from 'react-redux';
-import {
-	fetch_notyfication_start,
-	set_marked
-} from '../../../redux/UI/actions';
-import { useSelector } from 'react-redux';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useNavigate } from 'react-router-dom';
-import { Tooltip } from '@mui/material';
+import React, { useContext } from 'react';
+import { MenuItem, Menu } from '@mui/material';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { MainContext } from '../../../Context';
-import NotyficationData from './NotyficationData';
-import { Outlet } from 'react-router-dom';
 import { NotyficationContext } from '../../../Context';
-import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Stack, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { set_marked } from '../../../redux/UI/actions';
 
-const NotyficationSection = () => {
+const NotyficationData = () => {
 	const {
-		user: { email },
-		maxWidth600
+		maxWidth600,
+		user: { email }
 	} = useContext(MainContext);
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const { setAnchorEl, open, anchorEl, count } =
+		useContext(NotyficationContext);
 	const noty = useSelector((state) => state.UIData.notyfications);
-	const { comments } = useSelector((state) => state.UIData);
-	const { myProducts } = useSelector((state) => state.productsData);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const [anchorEl, setAnchorEl] = useState(null);
-	const open = Boolean(anchorEl);
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const location = useLocation();
-	const { pathname } = location;
-
-	useEffect(() => {
-		if (open) {
-			navigate(`/logged/${email}/notyfications`);
-		}
-	}, [open]);
-
-	let count = 0;
-	/*let notIdsOrders = [];
-	let notIdsComments = [];
-	//---------------CLOSING THE MENU WILL SET THE NOTYFICATIONS TO UNMARKED----
 	const handleClose = (productID, type) => {
 		setAnchorEl(null);
 		if (type === 'commnent') {
@@ -63,8 +34,9 @@ const NotyficationSection = () => {
 		dispatch(set_marked(notIdsOrders, notIdsComments, email));
 	};
 
-	
-	
+	let notIdsOrders = [];
+	let notIdsComments = [];
+
 	const notData = noty.map((item, indx) => {
 		if (item.type === 'commnent') {
 			notIdsComments.push(item._id);
@@ -131,30 +103,33 @@ const NotyficationSection = () => {
 			);
 		}
 	});
-*/
 	return (
-		<>
-			<Tooltip title='Open Notyfications'>
-				<IconButton
-					onClick={handleClick}
-					sx={{ my: 0, color: 'black', display: 'block' }}>
-					<Badge badgeContent={count} color='primary'>
-						<BookmarksIcon sx={{ fontSize: !maxWidth600 ? 25 : 20 }} />
-					</Badge>
-				</IconButton>
-			</Tooltip>
-
-			<NotyficationContext.Provider
-				value={{
-					count,
-					setAnchorEl,
-					open,
-					anchorEl
-				}}>
-				<NotyficationData />
-			</NotyficationContext.Provider>
-		</>
+		<Menu
+			id='basic-menu'
+			anchorEl={anchorEl}
+			open={open}
+			onClose={handleClose}
+			MenuListProps={{
+				'aria-labelledby': 'basic-button'
+			}}
+			PaperProps={{
+				style: {
+					maxHeight: '30ch',
+					width: '45ch'
+				}
+			}}>
+			{noty.length === 0 ? (
+				<Typography
+					textAlign='center'
+					sx={{ fontFamily: 'Sofia', fontSize: 18 }}
+					variant='body2'>
+					No notyfication yet
+				</Typography>
+			) : (
+				notData
+			)}
+		</Menu>
 	);
 };
 
-export default NotyficationSection;
+export default NotyficationData;

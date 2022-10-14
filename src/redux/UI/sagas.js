@@ -64,9 +64,9 @@ export function* setMarked({ payload }) {
 	const { notIdsOrders, notIdsComments, receiver } = payload;
 
 	let endpoints = [
-		`http://localhost:5000/logged/${receiver}`,
-		`http://localhost:5000/logged/${receiver}/yourProduct`,
-		`http://localhost:5000/logged/${receiver}/personalData`
+		`http://localhost:5000/logged/${receiver}/notyfications`,
+		`http://localhost:5000/logged/${receiver}/yourProduct/notyfications`,
+		`http://localhost:5000/logged/${receiver}/personalData/notyfications`
 	];
 
 	try {

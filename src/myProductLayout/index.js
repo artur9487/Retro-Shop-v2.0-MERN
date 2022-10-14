@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {
 	delete_products_start,
+	set_new_product_image,
 	set_product_start,
 	update_product_start
 } from '../redux/Products/actions';
@@ -64,6 +65,12 @@ const MyProducts = () => {
 	const [errors, setErrors] = useState(initErr);
 	const { fadeIn, setFade } = useCustomFadeHook();
 	const [matchState, setMatchState] = useState(false);
+	const { currentImage } = useSelector((state) => state.productsData);
+
+	useEffect(() => {
+		setImage(currentImage);
+		console.log(currentImage);
+	}, [currentImage]);
 
 	//---------------FADING FUNC--------------------
 	useEffect(() => {
@@ -91,6 +98,11 @@ const MyProducts = () => {
 	const handleClickOpen = (typ) => {
 		setType(typ);
 		setOpen(true);
+		if (typ === 'add') {
+			navigate(`/logged/${email}/yourProduct/newProduct`);
+		} else {
+			navigate(`/logged/${email}/yourProduct/uploadProduct`);
+		}
 	};
 
 	const handleClose = () => {
@@ -100,15 +112,7 @@ const MyProducts = () => {
 
 	//------------UPLOAD THE IMAGE FILE ON THE SERVER--------------
 	const onFileChange = async (e) => {
-		const file = e.target.files[0];
-		const storage = getStorage();
-		const storageRef = ref(storage, `productImages/${file.name}`);
-		await uploadBytes(storageRef, file).then((snapshot) => {
-			console.log('Uploaded a blob or file!');
-		});
-		await getDownloadURL(storageRef).then((url) => {
-			setImage(url);
-		});
+		dispatch(set_new_product_image(e.target.files[0], email));
 	};
 
 	//------------ERROR VALIDATION HANDLING-------------
@@ -148,19 +152,18 @@ const MyProducts = () => {
 			return;
 		}
 
-		dispatch(
-			set_product_start({
-				image,
-				productName,
-				productPrice,
-				category,
-				email,
-				ratingValue: ratingValue,
-				ratingCount: ratingCount,
-				productQuantity,
-				date: new Date()
-			})
-		);
+		const products = {
+			image,
+			productName,
+			productPrice,
+			category,
+			email,
+			ratingValue: ratingValue,
+			ratingCount: ratingCount,
+			productQuantity,
+			date: new Date()
+		};
+		dispatch(set_product_start(products));
 
 		handleClose();
 	};

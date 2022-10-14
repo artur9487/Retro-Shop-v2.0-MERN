@@ -39,7 +39,7 @@ const ProductDetails = () => {
 
 	let productDataArr;
 
-	if (pathname !== `/logged/${user.email}/yourProduct/${productID}`) {
+	if (pathname !== `/logged/${user?.email}/yourProduct/${productID}`) {
 		productDataArr = proProduct;
 	} else {
 		productDataArr = myProducts;

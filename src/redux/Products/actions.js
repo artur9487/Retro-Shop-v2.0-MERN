@@ -12,7 +12,10 @@ import {
 	GET_PRODUCT_NUMBER_END,
 	DELETE_CART_ITEM,
 	CLEAR_CART_COUNT,
-	CLEAR_CART
+	CLEAR_CART,
+	SET_NEW_PRODUCT_IMAGE,
+	SET_NEW_PRODUCT_IMAGE_END,
+	SET_UPDATED_PRODUCT_IMAGE
 } from '../types';
 import { SET_PRODUCT_END } from '../types';
 import { DELETE_PRODUCT } from '../types';
@@ -22,11 +25,29 @@ import { ADD_TO_CART } from '../types';
 import { ADD_ORDER } from '../types';
 import { FETCH_MY_PRODUCTS_START } from '../types';
 
+export const set_update_product_image = (image, email) => ({
+	type: SET_UPDATED_PRODUCT_IMAGE,
+	payload: { image, email }
+});
+
+export const set_new_product_image = (image, email) => ({
+	type: SET_NEW_PRODUCT_IMAGE,
+	payload: { image, email }
+});
+
+export const set_new_product_image_end = (image) => ({
+	type: SET_NEW_PRODUCT_IMAGE_END,
+	payload: image
+});
 //---------------SETTING A NEW PRODUCT TO SAGA----------------
 export const set_product_start = (products) => ({
 	type: SET_PRODUCT_START,
 	payload: products
 });
+
+export const clear_image = {
+	type: CLEAR_CART
+};
 
 //--------------RETRIEVE THE DATA AFTER FETCHING ABOUT THE PRODUCT----
 export const set_product_end = (result, number, pageInfo) => ({

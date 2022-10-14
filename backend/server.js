@@ -1,7 +1,13 @@
 /** @format */
 
 const express = require('express');
+const app = express();
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
+var imageModel = require('./models/imageModel');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const { initializeApp } = require('firebase/app');
@@ -19,12 +25,11 @@ const {
 	getPersonalData,
 	postComment,
 	getComments,
-	markNotyfications1,
-	markNotyfications2,
-	markNotyfications3,
+	markNotyfications,
 	register,
 	login,
-	updateyourProduct
+	updateyourProduct,
+	postNewProductImage
 } = require('./routes/mainRoute');
 
 const firebaseConfig = {
@@ -44,7 +49,6 @@ const auth = getAuth(fireapp);
 
 module.exports = { fireapp, auth };
 
-const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
@@ -57,6 +61,15 @@ connection.once('open', () => {
 	console.log('MongoDB database connection established successfully');
 });
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage }).single('file');
+
+app.post('/logged/:user/yourProduct/newProduct', upload, postNewProductImage);
+app.post(
+	'/logged/:user/yourProduct/updateProduct',
+	upload,
+	postNewProductImage
+);
 app.post('/logged/:user/yourProduct', postYourProduct);
 app.get('/', getStartPage);
 app.get('/:productID', getComments);
@@ -70,9 +83,9 @@ app.put('/logged/:user/order', updateProductsAfterOrdering);
 app.get('/logged/:user/personalData', getPersonalData);
 app.post('/logged/:user/:productID', postComment);
 app.get('/logged/:user/:productID', getComments);
-app.put('/logged/:user/:productID', markNotyfications1);
-app.put('/logged/:user/:productID', markNotyfications2);
-app.put('/logged/:user/:productID', markNotyfications3);
+app.put('/logged/:user/notyfications', markNotyfications);
+app.put('/logged/:user/yourProduct/notyfications', markNotyfications);
+app.put('/logged/:user/personalData/notyfications', markNotyfications);
 app.post('/register', register);
 app.post('/login', login);
 

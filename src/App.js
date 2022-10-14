@@ -21,6 +21,8 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { set_current_user_end, sign_out } from './redux/Auth/actions';
 import { useEffect, useState } from 'react';
+import DialogComp from './myProductLayout/Dialog';
+import NotyficationData from './UpBarr/RegisterSection/NotyficationSection/NotyficationData';
 
 function App() {
 	const theme = createTheme({
@@ -93,20 +95,30 @@ function App() {
 									) : (
 										<Navigate replace to='/login' />
 									)
-								}
-							/>
+								}>
+								<Route
+									path=':productID'
+									element={
+										isAuthorized ? (
+											<ProductDetails />
+										) : (
+											<Navigate replace to='/login' />
+										)
+									}
+								/>
+							</Route>
 							<Route
-								exact
-								path='logged/:user/:productID'
+								path='logged/:user/notyfications'
 								element={
 									isAuthorized ? (
-										<ProductDetails />
+										<LayoutWithCart>
+											<AllProducts />
+										</LayoutWithCart>
 									) : (
 										<Navigate replace to='/login' />
 									)
 								}
 							/>
-
 							<Route
 								path='logged/:user/order'
 								element={
@@ -117,7 +129,9 @@ function App() {
 									) : (
 										<Navigate replace to='/login' />
 									)
-								}></Route>
+								}
+							/>
+
 							<Route
 								path='logged/:user/yourProduct'
 								element={
@@ -130,7 +144,19 @@ function App() {
 									)
 								}>
 								<Route path=':productID' element={<ProductDetails />} />
+								<Route path='updateProduct' element={<DialogComp />} />
+								<Route path='newProduct' element={<DialogComp />} />
 							</Route>
+							<Route
+								path='logged/:user/yourProduct/notyfications'
+								element={
+									isAuthorized ? (
+										<NotyficationData />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
 							<Route
 								path='logged/:user/personalData'
 								element={
@@ -141,9 +167,17 @@ function App() {
 									) : (
 										<Navigate replace to='/login' />
 									)
+								}></Route>
+							<Route
+								path='logged/:user/personalData/notyfications'
+								element={
+									isAuthorized ? (
+										<NotyficationData />
+									) : (
+										<Navigate replace to='/login' />
+									)
 								}
 							/>
-
 							<Route path='Login' element={<Login />} />
 							<Route path='Register' element={<Register />} />
 						</Route>

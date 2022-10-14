@@ -17,18 +17,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const CartItem = (item) => {
 	const dispatch = useDispatch();
-	const { productPrice, productName, count, id, indx } = item;
+	const { productPrice, productName, count, _id, indx } = item;
 
+	const quan = null;
+	const type = 'adding';
 	const handleUp = () => {
-		dispatch(add_to_cart(id));
+		dispatch(add_to_cart(_id, quan, type));
 	};
 
 	const handleDown = () => {
-		dispatch(cart_down(id));
+		dispatch(cart_down(_id));
 	};
 
 	const handleDelete = () => {
-		dispatch(delete_cart_item(id));
+		dispatch(delete_cart_item(_id));
 	};
 
 	return (

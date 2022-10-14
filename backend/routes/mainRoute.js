@@ -5,19 +5,51 @@ let Products = require('../models/productModels');
 let Order = require('../models/orderModels');
 let OrderNotyfication = require('../models/orderNotyficationModel');
 let CommentNotyfication = require('../models/commentNotyficationModel');
+const multer = require('multer');
+
 const {
 	createUserWithEmailAndPassword,
 	getAuth,
 	signInWithEmailAndPassword,
 	onAuthStateChanged
 } = require('firebase/auth');
+const {
+	getStorage,
+	ref,
+	uploadBytes,
+	getDownloadURL
+} = require('firebase/storage');
+
+exports.postNewProductImage = (req, res) => {
+	const storage = getStorage();
+	const file = req.file;
+	console.log(req.file);
+	const timestamp = Date.now();
+	const name = file.originalname.split('.')[0];
+	const type = file.originalname.split('.')[1];
+	const fileName = `${name}_${timestamp}.${type}`;
+	const storageRef = ref(storage, `productImages/${fileName}`);
+	uploadBytes(storageRef, file.buffer)
+		.then((snapshot) => {
+			console.log('Uploaded a blob or file!');
+		})
+		.then(() => {
+			getDownloadURL(storageRef).then((url) => {
+				console.log(url);
+				return res.json(url);
+			});
+		})
+		.catch((err) => res.status(400).json('Error:' + err));
+};
 
 exports.postYourProduct = (req, res) => {
 	const newProductBody = req.body;
 	const newProduct = new Products(newProductBody);
 	newProduct
 		.save()
-		.then(() => res.json('product Added'))
+		.then(() => {
+			return res.json('product Added');
+		})
 		.catch((err) => res.status(400).json('Error:' + err));
 };
 
@@ -260,101 +292,9 @@ const markingFunction = (notIdsOrders, notIdsComments, user) => {
 		});
 };
 
-exports.markNotyfications1 = (req, res) => {
+exports.markNotyfications = (req, res) => {
 	const { user } = req.params;
 	const { notIdsOrders, notIdsComments } = req.body;
-	//markingFunction(notIdsOrders, notIdsComments, user);
-	CommentNotyfication.bulkWrite(
-		notIdsComments.map((id) => {
-			return {
-				updateOne: {
-					filter: { _id: id },
-					update: { $set: { marked: true } }
-				}
-			};
-		})
-	);
-
-	OrderNotyfication.bulkWrite(
-		notIdsOrders.map((id) => {
-			return {
-				updateOne: {
-					filter: { _id: id },
-					update: { $set: { marked: true } }
-				}
-			};
-		})
-	);
-
-	CommentNotyfication.find({ receiver: user })
-		.sort({ date: -1 })
-		.limit(10)
-		.then((comments) => {
-			OrderNotyfication.find({ receiver: user })
-				.sort({ date: -1 })
-				.limit(10)
-				.then((orders) => {
-					let notyfications = comments.concat(orders);
-					notyfications.sort((a, b) => b.date - a.date);
-					const notyfication10 = notyfications.slice(0, 10);
-
-					return res.json({
-						notyfications: notyfication10
-					});
-				});
-		});
-};
-
-exports.markNotyfications2 = (req, res) => {
-	const { user } = req.params;
-	const { notIdsOrders, notIdsComments } = req.body;
-	//markingFunction(notIdsOrders, notIdsComments, user);
-	CommentNotyfication.bulkWrite(
-		notIdsComments.map((id) => {
-			return {
-				updateOne: {
-					filter: { _id: id },
-					update: { $set: { marked: true } }
-				}
-			};
-		})
-	);
-
-	OrderNotyfication.bulkWrite(
-		notIdsOrders.map((id) => {
-			return {
-				updateOne: {
-					filter: { _id: id },
-					update: { $set: { marked: true } }
-				}
-			};
-		})
-	);
-
-	CommentNotyfication.find({ receiver: user })
-		.sort({ date: -1 })
-		.limit(10)
-		.then((comments) => {
-			OrderNotyfication.find({ receiver: user })
-				.sort({ date: -1 })
-				.limit(10)
-				.then((orders) => {
-					let notyfications = comments.concat(orders);
-					notyfications.sort((a, b) => b.date - a.date);
-					const notyfication10 = notyfications.slice(0, 10);
-
-					return res.json({
-						notyfications: notyfication10
-					});
-				});
-		});
-};
-
-exports.markNotyfications3 = (req, res) => {
-	const { user } = req.params;
-	const { notIdsOrders, notIdsComments } = req.body;
-
-	//markingFunction(notIdsOrders, notIdsComments, user);
 	CommentNotyfication.bulkWrite(
 		notIdsComments.map((id) => {
 			return {

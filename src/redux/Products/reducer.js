@@ -11,7 +11,9 @@ import {
 	GET_PRODUCT_NUMBER_END,
 	DELETE_CART_ITEM,
 	CLEAR_CART_COUNT,
-	CLEAR_CART
+	CLEAR_CART,
+	SET_NEW_PRODUCT_IMAGE_END,
+	CLEAR_IMAGE
 } from '../types';
 
 const INITIAL_STATE = {
@@ -23,11 +25,17 @@ const INITIAL_STATE = {
 	myPurchases: [],
 	productNumber: 0,
 	cartCount: 0,
-	pageInfo: {}
+	pageInfo: {},
+	currentImage: ''
 };
 
 export const productsReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case SET_NEW_PRODUCT_IMAGE_END:
+			return {
+				...state,
+				currentImage: action.payload
+			};
 		//--------------RETRIEVE THE DATA AFTER FETCHING ABOUT THE PRODUCT----
 		case SET_PRODUCT_END:
 			return {
@@ -57,7 +65,9 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
 		case ADD_TO_CART:
 			const proCart = [...state.cart];
 			const proProducts = [...state.products];
+
 			const { id, quan, type } = action.payload;
+
 			let count2 = Number(quan);
 			const indx = proCart.findIndex((item) => item._id === id);
 			const indx2 = proProducts.findIndex((item) => item._id === id);
@@ -118,14 +128,14 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
 		case CART_DOWN:
 			let proCartt = [...state.cart];
 			let proProductss = [...state.products];
-			const indxx = proCartt.findIndex((item) => item.id === action.payload);
+			const indxx = proCartt.findIndex((item) => item._id === action.payload);
 			const indxx2 = proProductss.findIndex(
-				(item) => item.id === action.payload
+				(item) => item._id === action.payload
 			);
 
 			if (proCartt[indxx].count <= 1) {
 				proCartt = proCartt.filter((item) => {
-					return item.id !== action.payload;
+					return item._id !== action.payload;
 				});
 			} else {
 				proCartt[indxx].count = proCartt[indxx].count - 1;
@@ -155,7 +165,7 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
 		case DELETE_CART_ITEM:
 			let proCarttt = [...state.cart];
 			proCarttt = proCarttt.filter((item) => {
-				return item.id !== action.payload;
+				return item._id !== action.payload;
 			});
 			return { ...state, cart: [...proCarttt] };
 		//-----------------------------CLEAR THE COUNT OF THE PRODUCTS IN THE CART------------------------
@@ -164,6 +174,8 @@ export const productsReducer = (state = INITIAL_STATE, action) => {
 		//-----------------------------DELETE ALL THE ITEMS IN THE CART------------------------
 		case CLEAR_CART:
 			return { ...state, cart: [] };
+		case CLEAR_IMAGE:
+			return { ...state, currentImage: '' };
 		default:
 			return state;
 	}

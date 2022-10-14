@@ -10,28 +10,83 @@ import {
 	UPDATE_PRODUCT,
 	FETCH_MY_PRODUCTS_START,
 	FETCH_ORDERS,
-	GET_PRODUCT_NUMBER
+	GET_PRODUCT_NUMBER,
+	SET_NEW_PRODUCT_IMAGE,
+	SET_UPDATED_PRODUCT_IMAGE
 } from '../types';
 import {
+	clear_image,
 	fetch_my_products_end,
 	fetch_my_products_start,
 	fetch_orders,
 	fetch_products,
 	fetch_purchases_end,
 	get_product_number_end,
+	set_new_product_image_end,
 	set_product_end
 } from './actions';
 import { fetch_notyfication_end } from '../UI/actions';
 import { add_order_end } from './actions';
 
+export function* setUpdateProductImage({ payload }) {
+	try {
+		const formData = new FormData();
+		formData.append('file', payload.image);
+		for (var pair of formData.entries()) {
+			console.log(pair[0] + ', ' + pair[1]);
+		}
+		const response = yield axios.post(
+			`http://localhost:5000/logged/${payload.email}/yourProduct/updateProduct`,
+			formData
+		);
+
+		const image = response.data;
+
+		yield put(set_new_product_image_end(image));
+	} catch (e) {
+		console.error('Error adding document: ', e);
+	}
+}
+
+export function* onSetUpdateProductImage() {
+	yield takeLatest(SET_UPDATED_PRODUCT_IMAGE, setUpdateProductImage);
+}
+
+export function* setNewProductImage({ payload }) {
+	try {
+		const formData = new FormData();
+		formData.append('file', payload.image);
+		for (var pair of formData.entries()) {
+			console.log(pair[0] + ', ' + pair[1]);
+		}
+		const response = yield axios.post(
+			`http://localhost:5000/logged/${payload.email}/yourProduct/newProduct`,
+			formData
+		);
+
+		const image = response.data;
+
+		yield put(set_new_product_image_end(image));
+	} catch (e) {
+		console.error('Error adding document: ', e);
+	}
+}
+
+export function* onSetNewProductImage() {
+	yield takeLatest(SET_NEW_PRODUCT_IMAGE, setNewProductImage);
+}
+
 //----------------ADD YOUR PRODUCT------------------------------
+
 export function* setProductStart({ payload }) {
 	try {
 		const { email } = payload;
+
 		yield axios
 			.post(`http://localhost:5000/logged/${email}/yourProduct`, payload)
 			.then(() => console.log('Product Added'));
 		yield put(fetch_my_products_start(payload.email));
+		yield put(clear_image);
 	} catch (e) {
 		console.error('Error adding document: ', e);
 	}
@@ -108,6 +163,7 @@ export function* updateProductStart({ payload }) {
 			.then(() => console.log('Product updated'));
 
 		yield put(fetch_my_products_start(email));
+		yield put(clear_image);
 	} catch (e) {
 		console.error('Error adding document: ', e);
 	}
@@ -283,6 +339,8 @@ export function* onGetProductNumber() {
 
 export default function* productSagas() {
 	yield all([
+		call(onSetNewProductImage),
+		call(onSetUpdateProductImage),
 		call(onSetProduct),
 		call(onDeleteProduct),
 		call(onUpdateProduct),

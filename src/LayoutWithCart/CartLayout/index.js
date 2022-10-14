@@ -44,7 +44,7 @@ const CartLayout = () => {
 		const { email } = user;
 
 		const total = state2.reduce((one, two) => {
-			return (one + Number(two.productPrice)).toFixed(2);
+			return one + Number(two.productPrice);
 		}, 0);
 
 		const handleCart = () => {
