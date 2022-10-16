@@ -23,6 +23,7 @@ import { set_current_user_end, sign_out } from './redux/Auth/actions';
 import { useEffect, useState } from 'react';
 import DialogComp from './myProductLayout/Dialog';
 import NotyficationData from './UpBarr/RegisterSection/NotyficationSection/NotyficationData';
+import CartLayout from './LayoutWithCart/CartLayout';
 
 function App() {
 	const theme = createTheme({
@@ -73,114 +74,142 @@ function App() {
 				}}>
 				<RouteCompo>
 					<Routes>
-						<Route path='/' element={<CompleteApp />}>
-							<Route
-								exact
-								path='/'
-								element={
-									<LayoutWithCart>
-										<AllProducts />
-									</LayoutWithCart>
-								}>
-								<Route exact path=':productID' element={<ProductDetails />} />
-							</Route>
-							<Route
-								exact
-								path='logged/:user'
-								element={
-									isAuthorized ? (
-										<LayoutWithCart>
-											<AllProducts />
-										</LayoutWithCart>
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}>
-								<Route
-									path=':productID'
-									element={
-										isAuthorized ? (
-											<ProductDetails />
-										) : (
-											<Navigate replace to='/login' />
-										)
-									}
-								/>
-							</Route>
-							<Route
-								path='logged/:user/notyfications'
-								element={
-									isAuthorized ? (
-										<LayoutWithCart>
-											<AllProducts />
-										</LayoutWithCart>
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
-							<Route
-								path='logged/:user/order'
-								element={
-									isAuthorized ? (
-										<LayoutWithCart>
-											<AllProducts />
-										</LayoutWithCart>
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
-
-							<Route
-								path='logged/:user/yourProduct'
-								element={
-									isAuthorized ? (
-										<LayoutWithCart>
-											<MyProducts />
-										</LayoutWithCart>
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}>
-								<Route path=':productID' element={<ProductDetails />} />
-								<Route path='updateProduct' element={<DialogComp />} />
-								<Route path='newProduct' element={<DialogComp />} />
-							</Route>
-							<Route
-								path='logged/:user/yourProduct/notyfications'
-								element={
-									isAuthorized ? (
-										<NotyficationData />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
-							<Route
-								path='logged/:user/personalData'
-								element={
-									isAuthorized ? (
-										<LayoutWithCart>
-											<PersonalData />
-										</LayoutWithCart>
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}></Route>
-							<Route
-								path='logged/:user/personalData/notyfications'
-								element={
-									isAuthorized ? (
-										<NotyficationData />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
-							<Route path='Login' element={<Login />} />
-							<Route path='Register' element={<Register />} />
+						<Route
+							exact
+							path='/'
+							element={
+								<CompleteApp>
+									<AllProducts />
+								</CompleteApp>
+							}>
+							<Route exact path=':productID' element={<ProductDetails />} />
 						</Route>
+						<Route
+							exact
+							path='logged/:user'
+							element={
+								isAuthorized ? (
+									<CompleteApp>
+										<AllProducts />
+									</CompleteApp>
+								) : (
+									<Navigate replace to='/login' />
+								)
+							}>
+							<Route
+								path=':productID'
+								element={
+									isAuthorized ? (
+										<ProductDetails />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+							<Route
+								path='order'
+								element={
+									isAuthorized ? (
+										<CartLayout />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+							<Route
+								path='notyfications'
+								element={
+									isAuthorized ? (
+										<NotyficationData />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+						</Route>
+						<Route
+							path='logged/:user/yourProduct'
+							element={
+								isAuthorized ? (
+									<CompleteApp>
+										<MyProducts />
+									</CompleteApp>
+								) : (
+									<Navigate replace to='/login' />
+								)
+							}>
+							<Route path=':productID' element={<ProductDetails />} />
+							<Route path='updateProduct' element={<DialogComp />} />
+							<Route path='newProduct' element={<DialogComp />} />
+							<Route
+								path='notyfications'
+								element={
+									isAuthorized ? (
+										<NotyficationData />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+							<Route
+								path='order'
+								element={
+									isAuthorized ? (
+										<CartLayout />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+						</Route>
+						<Route
+							path='logged/:user/personalData'
+							element={
+								isAuthorized ? (
+									<CompleteApp>
+										<PersonalData />
+									</CompleteApp>
+								) : (
+									<Navigate replace to='/login' />
+								)
+							}>
+							<Route
+								path='notyfications'
+								element={
+									isAuthorized ? (
+										<NotyficationData />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+							<Route
+								path='order'
+								element={
+									isAuthorized ? (
+										<CartLayout />
+									) : (
+										<Navigate replace to='/login' />
+									)
+								}
+							/>
+						</Route>
+						<Route
+							path='Login'
+							element={
+								<CompleteApp>
+									<Login />
+								</CompleteApp>
+							}
+						/>
+						<Route
+							path='Register'
+							element={
+								<CompleteApp>
+									<Register />
+								</CompleteApp>
+							}
+						/>
 					</Routes>
 				</RouteCompo>
 			</MainContext.Provider>

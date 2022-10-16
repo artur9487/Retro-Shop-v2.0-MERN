@@ -17,7 +17,6 @@ import {
 	set_product_start,
 	update_product_start
 } from '../redux/Products/actions';
-import DialogComp from './Dialog';
 import { Context } from '../Context';
 import { fetch_my_products_start } from '../redux/Products/actions';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +28,6 @@ import DirectionsIcon from '@mui/icons-material/Directions';
 import { Tooltip } from '@mui/material';
 import { IconButton } from '@mui/material';
 import moment from 'moment';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import useCustomFadeHook from '../customHooks/customFadeHook';
 import Footer from '../Footer';
 import '../globalVariables.scss';
@@ -419,9 +417,6 @@ const MyProducts = () => {
 									You dont have any products
 								</Typography>
 							)}
-							<div>
-								<DialogComp />
-							</div>
 						</Grid>
 					</Grid>
 					<Footer />

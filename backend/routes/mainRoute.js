@@ -328,7 +328,7 @@ exports.markNotyfications = (req, res) => {
 					let notyfications = comments.concat(orders);
 					notyfications.sort((a, b) => b.date - a.date);
 					const notyfication10 = notyfications.slice(0, 10);
-					console.log(notyfication10);
+
 					return res.json({
 						notyfications: notyfication10
 					});

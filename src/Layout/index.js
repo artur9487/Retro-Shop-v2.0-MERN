@@ -131,7 +131,6 @@ const Layout = () => {
 						</Box>
 					</Box>
 				</Stack>
-				<Outlet />
 			</div>
 			<Footer />
 		</>

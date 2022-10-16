@@ -12,7 +12,7 @@ import {
 import { useSelector } from 'react-redux';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { MainContext } from '../../../Context';
@@ -40,24 +40,21 @@ const NotyficationSection = () => {
 
 	const location = useLocation();
 	const { pathname } = location;
-
-	useEffect(() => {
-		if (open) {
-			navigate(`/logged/${email}/notyfications`);
-		}
-	}, [open]);
-
 	let count = 0;
+	/*	;
 	let notIdsOrders = [];
 	let notIdsComments = [];
 	//---------------CLOSING THE MENU WILL SET THE NOTYFICATIONS TO UNMARKED----
 	const handleClose = (productID, type) => {
 		setAnchorEl(null);
-		if (type === 'commnent') {
+		if (type === 'comment') {
+			console.log(1);
 			navigate(`/logged/${email}/${productID}`);
 		} else if (type === 'order') {
+			console.log(2);
 			navigate(`/logged/${email}/personalData`);
 		} else {
+			console.log(3);
 			navigate(-1);
 		}
 		dispatch(set_marked(notIdsOrders, notIdsComments, email));
@@ -127,18 +124,20 @@ const NotyficationSection = () => {
 				</MenuItem>
 			);
 		}
-	});
+	});*/
 
 	return (
 		<>
 			<Tooltip title='Open Notyfications'>
-				<IconButton
-					onClick={handleClick}
-					sx={{ my: 0, color: 'black', display: 'block' }}>
-					<Badge badgeContent={count} color='primary'>
-						<BookmarksIcon sx={{ fontSize: !maxWidth600 ? 25 : 20 }} />
-					</Badge>
-				</IconButton>
+				<Link to={pathname + `/notyfications`}>
+					<IconButton
+						onClick={handleClick}
+						sx={{ my: 0, color: 'black', display: 'block' }}>
+						<Badge badgeContent={count} color='primary'>
+							<BookmarksIcon sx={{ fontSize: !maxWidth600 ? 25 : 20 }} />
+						</Badge>
+					</IconButton>
+				</Link>
 			</Tooltip>
 
 			<NotyficationContext.Provider
@@ -148,7 +147,9 @@ const NotyficationSection = () => {
 					open,
 					anchorEl
 				}}>
-				<Menu
+				<Outlet />
+
+				{/*	<Menu
 					id='basic-menu'
 					anchorEl={anchorEl}
 					open={open}
@@ -172,7 +173,7 @@ const NotyficationSection = () => {
 					) : (
 						notData
 					)}
-				</Menu>
+					</Menu>*/}
 			</NotyficationContext.Provider>
 		</>
 	);

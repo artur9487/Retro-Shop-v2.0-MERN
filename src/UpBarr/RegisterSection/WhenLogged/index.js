@@ -9,11 +9,14 @@ import { Stack } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { MainContext } from '../../../Context';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const WhenLogged = ({ cartCount, handleCart, handleSignOut }) => {
 	const { maxWidth600, maxWidth900, user } = useContext(MainContext);
 	const { fadeIn, setFade } = useCustomFadeHook();
 	const [matchState, setMatchState] = useState(false);
+	const location = useLocation();
+	const { pathname } = location;
 
 	//-------FADE IN LOGIC-----------
 	useEffect(() => {
@@ -30,12 +33,12 @@ const WhenLogged = ({ cartCount, handleCart, handleSignOut }) => {
 				direction='row'
 				alignItems='center'
 				sx={{ width: { xs: 100, sm: 225, md: 250 } }}>
-				<Link to={`logged/${user.email}/order`}>
-					<Stack
-						alignItems='center'
-						justifyContent={matchState ? 'space-evenly' : 'center'}
-						direction={matchState ? 'row' : 'column'}
-						sx={{ width: !maxWidth900 ? '65%' : '50%' }}>
+				<Stack
+					alignItems='center'
+					justifyContent={matchState ? 'space-evenly' : 'center'}
+					direction={matchState ? 'row' : 'column'}
+					sx={{ width: !maxWidth900 ? '65%' : '50%' }}>
+					<Link to={pathname + `/order`}>
 						<Tooltip title='Open Cart'>
 							<IconButton
 								sx={{
@@ -52,9 +55,9 @@ const WhenLogged = ({ cartCount, handleCart, handleSignOut }) => {
 								</Badge>
 							</IconButton>
 						</Tooltip>
-						<NotyficationSection user={user.email} />
-					</Stack>
-				</Link>
+					</Link>
+					<NotyficationSection user={user.email} />
+				</Stack>
 
 				<Button
 					color='inherit'

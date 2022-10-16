@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useContext } from 'react';
-import { MenuItem, Menu } from '@mui/material';
+import { MenuItem, Menu, Box } from '@mui/material';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { MainContext } from '../../../Context';
 import { NotyficationContext } from '../../../Context';
@@ -11,12 +11,13 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { set_marked } from '../../../redux/UI/actions';
 
-const NotyficationData = ({ count }) => {
+const NotyficationData = () => {
 	const {
 		maxWidth600,
 		user: { email }
 	} = useContext(MainContext);
-	const { setAnchorEl, open, anchorEl } = useContext(NotyficationContext);
+	const { setAnchorEl, open, anchorEl, count } =
+		useContext(NotyficationContext);
 	const noty = useSelector((state) => state.UIData.notyfications);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
