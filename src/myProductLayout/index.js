@@ -293,7 +293,7 @@ const MyProducts = () => {
 				image,
 				handleClickOpen
 			}}>
-			<Outlet />
+			{open === true && <Outlet />}
 			{prod ? (
 				<>
 					<Grid

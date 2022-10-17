@@ -11,13 +11,16 @@ import { MainContext } from '../../../Context';
 import { Outlet } from 'react-router-dom';
 import { NotyficationContext } from '../../../Context';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toogle_notyfication } from '../../../redux/UI/actions';
+import { useEffect } from 'react';
 
 const NotyficationSection = () => {
 	const {
 		user: { email },
 		maxWidth600
 	} = useContext(MainContext);
-
+	const dispatch = useDispatch();
 	const [anchorEl, setAnchorEl] = useState(null);
 	const noty = useSelector((state) => state.UIData.notyfications);
 	const open = Boolean(anchorEl);
@@ -27,6 +30,10 @@ const NotyficationSection = () => {
 
 	const location = useLocation();
 	const { pathname } = location;
+
+	useEffect(() => {
+		dispatch(toogle_notyfication);
+	}, [dispatch, open]);
 
 	const count = noty.reduce((a, b) => {
 		if (b.marked === false) {
@@ -53,8 +60,8 @@ const NotyficationSection = () => {
 			<NotyficationContext.Provider
 				value={{
 					setAnchorEl,
-					open,
-					anchorEl
+					anchorEl,
+					open
 				}}>
 				{pathname === `/logged/${email}/yourProduct/newProduct` ||
 				pathname === `/logged/${email}/yourProduct/updateProduct` ? null : (

@@ -47,26 +47,7 @@ module.exports = (req, res, next) => {
 			})
 			.then((url) => {
 				const newProductBody = { ...req.body, image: url };
-				console.log(newProductBody);
 			})
-			/*admin
-			.storage()
-			.bucket()
-			.upload(imageToBeUploaded.filepath, {
-				resumable: false,
-				metadata: {
-					metadata: {
-						contentType: imageToBeUploaded.mimetype,
-						//Generate token to be appended to imageUrl
-						firebaseStorageDownloadTokens: generatedToken
-					}
-				}
-			})
-			.then(() => {
-				// Append token to url
-				const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media&token=${generatedToken}`;
-				return db.doc(`/users/${req.user.handle}`).update({ imageUrl });
-			})*/
 			.then(() => {
 				return res.json({ message: 'image uploaded successfully' });
 			})

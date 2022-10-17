@@ -47,7 +47,7 @@ const ProductLayout = () => {
 		}
 
 		dispatch(fetch_products(limit, page, user));
-	}, [dispatch, page]);
+	}, [dispatch, page, user]);
 	//----------------------------------------------------------------------------
 
 	const result = products.products.map((item, indx) => {

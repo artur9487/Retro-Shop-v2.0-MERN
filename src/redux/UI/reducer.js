@@ -7,7 +7,8 @@ import {
 	FETCH_NOTYFICATION_END,
 	SET_BAR_HEIGHT,
 	START_SCROLL,
-	TOOGLE_CART
+	TOOGLE_CART,
+	TOOGLE_NOTYFICATION
 } from '../types';
 
 const INITIAL_STATE = {
@@ -16,7 +17,8 @@ const INITIAL_STATE = {
 	notyfications: [],
 	startScroll: false,
 	scrollPos: 0,
-	barHeight: 0
+	barHeight: 0,
+	toogleNotyfication: false
 };
 
 const UIReducer = (state = INITIAL_STATE, action) => {
@@ -64,6 +66,14 @@ const UIReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				startScroll: false
+			};
+		//----------TOOGLE THE NOTYFICATION BAR STATUS----
+		case TOOGLE_NOTYFICATION:
+			let notyficationStatus =
+				state.toogleNotyfication === false ? true : false;
+			return {
+				...state,
+				toogleNotyfication: notyficationStatus
 			};
 		default:
 			return state;

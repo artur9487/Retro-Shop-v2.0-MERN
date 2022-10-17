@@ -36,8 +36,6 @@ const DialogComp = () => {
 		handleQuan
 	} = useContext(Context);
 
-	console.log(productName);
-
 	const {
 		imageErr,
 		productNameErr,
@@ -66,12 +64,14 @@ const DialogComp = () => {
 									style={{ objectFit: 'contain' }}
 									className='myImg'
 									src={image}
+									alt='productPhoto'
 								/>
 							) : (
 								<img
 									style={{ objectFit: 'contain' }}
 									className='myImg'
 									src={noPhoto}
+									alt='noPhoto'
 								/>
 							)}
 						</Box>

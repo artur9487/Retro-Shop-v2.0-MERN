@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useContext } from 'react';
-import { MenuItem, Menu, Box } from '@mui/material';
+import { MenuItem, Menu } from '@mui/material';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { MainContext } from '../../../Context';
 import { NotyficationContext } from '../../../Context';
@@ -16,13 +16,13 @@ const NotyficationData = () => {
 		maxWidth600,
 		user: { email }
 	} = useContext(MainContext);
-	const { setAnchorEl, open, anchorEl } = useContext(NotyficationContext);
-	const noty = useSelector((state) => state.UIData.notyfications);
+	const { anchorEl, open } = useContext(NotyficationContext);
+	const { notyfications } = useSelector((state) => state.UIData);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
+	//-----------FUNTIONALITY WHEN CLOSING THE MODAL--------
 	const handleClose = (productID, type) => {
-		setAnchorEl(null);
 		if (type === 'comment') {
 			navigate(`/logged/${email}/${productID}`);
 		} else if (type === 'order') {
@@ -32,17 +32,17 @@ const NotyficationData = () => {
 		}
 		dispatch(set_marked(notIdsOrders, notIdsComments, email));
 	};
-
+	//---------------SETTING WHICH COMMENTS SHOULD BE MARKED AS READ--------
 	let notIdsOrders = [];
 	let notIdsComments = [];
 
-	const notData = noty.map((item, indx) => {
-		if (item.type === 'commnent') {
+	const notData = notyfications.map((item, indx) => {
+		if (item.type === 'comment') {
 			notIdsComments.push(item._id);
 		} else {
 			notIdsOrders.push(item._id);
 		}
-
+		//---------------------RENDERING SINGLE NOTYFICATIONS---------
 		if (item.type === 'comment') {
 			return (
 				<MenuItem
@@ -114,7 +114,7 @@ const NotyficationData = () => {
 					width: '45ch'
 				}
 			}}>
-			{noty.length === 0 ? (
+			{notyfications.length === 0 ? (
 				<Typography
 					textAlign='center'
 					sx={{ fontFamily: 'Sofia', fontSize: 18 }}

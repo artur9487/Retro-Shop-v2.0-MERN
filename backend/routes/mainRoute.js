@@ -55,7 +55,7 @@ exports.postYourProduct = (req, res) => {
 exports.updateyourProduct = (req, res) => {
 	const newProductBody = req.body.product;
 	const productID = req.body.id;
-	console.log(newProductBody);
+
 	Products.replaceOne({ _id: productID }, newProductBody)
 		.then(() => res.json('product Updated'))
 		.catch((err) => res.status(400).json('Error:' + err));
@@ -294,7 +294,7 @@ const markingFunction = (notIdsOrders, notIdsComments, user) => {
 exports.markNotyfications = (req, res) => {
 	const { user } = req.params;
 	const { notIdsOrders, notIdsComments } = req.body;
-	console.log(notIdsOrders, notIdsComments);
+
 	CommentNotyfication.bulkWrite(
 		notIdsComments.map((id) => {
 			return {

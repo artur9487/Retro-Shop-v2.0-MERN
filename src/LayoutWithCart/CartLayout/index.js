@@ -26,13 +26,7 @@ const CartLayout = () => {
 	const [notif, setNotif] = useState('');
 	const dispatch = useDispatch();
 	const fontOleo = 'Oleo Script Swash Caps';
-	const { fadeIn, setFade } = useCustomFadeHook();
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		setFade();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [notif]);
 
 	useEffect(() => {
 		if (state2.length > 0) {

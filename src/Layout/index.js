@@ -17,10 +17,9 @@ import { MainContext } from '../Context';
 import { execute_scroll } from '../redux/UI/actions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
-	const { maxWidth1200, maxWidth600, user } = useContext(MainContext);
+	const { maxWidth1200, maxWidth600 } = useContext(MainContext);
 	const dispatch = useDispatch();
 	//----------------------------FADE IN DURING SCROLLING -------------------------------
 	const myRef = useRef(null);
@@ -31,7 +30,6 @@ const Layout = () => {
 	const [windowDimensions, setWindowDimensions] = useState(
 		getWindowDimensions()
 	);
-	const { products } = useSelector((state) => state.productsData);
 
 	function getWindowDimensions() {
 		const { innerHeight: height } = window;
@@ -69,10 +67,6 @@ const Layout = () => {
 			window.removeEventListener('resize', handleResize, true);
 		}
 	}, [scrollPosition, windowDimensions, handleResize, handleScroll]);
-
-	/*useEffect(() => {
-		dispatch(fetch_products(6, 1, user));
-	}, [dispatch]);*/
 
 	//-------------------------------------------------------------------------
 
@@ -131,7 +125,7 @@ const Layout = () => {
 					</Box>
 				</Stack>
 			</div>
-			<Outlet />
+
 			<Footer />
 		</>
 	);

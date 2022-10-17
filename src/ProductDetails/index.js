@@ -62,7 +62,7 @@ const ProductDetails = () => {
 		return () => {
 			setOpen(false);
 		};
-	}, [params, dispatch, productID]);
+	}, [params, dispatch, productID, user]);
 
 	//---------------------CLOSING DIALOG-----------------------
 	const handleClose = () => {

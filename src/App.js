@@ -4,7 +4,6 @@ import './App.scss';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import AllProducts from './Layout';
 import MyProducts from './myProductLayout';
-import LayoutWithCart from './LayoutWithCart';
 import Login from './Login';
 import Register from './Register';
 import ProductDetails from './ProductDetails';
@@ -61,7 +60,7 @@ function App() {
 				setIsAuthorized(true);
 			}
 		}
-	}, [navigate, user]);
+	}, [navigate, user, dispatch]);
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -96,36 +95,9 @@ function App() {
 									<Navigate replace to='/login' />
 								)
 							}>
-							<Route
-								path=':productID'
-								element={
-									isAuthorized ? (
-										<ProductDetails />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
-							<Route
-								path='order'
-								element={
-									isAuthorized ? (
-										<CartLayout />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
-							<Route
-								path='notyfications'
-								element={
-									isAuthorized ? (
-										<NotyficationData />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
+							<Route path=':productID' element={<ProductDetails />} />
+							<Route path='order' element={<CartLayout />} />
+							<Route path='notyfications' element={<NotyficationData />} />
 						</Route>
 						<Route
 							path='logged/:user/yourProduct'
@@ -141,26 +113,8 @@ function App() {
 							<Route path=':productID' element={<ProductDetails />} />
 							<Route path='updateProduct' element={<DialogComp />} />
 							<Route path='newProduct' element={<DialogComp />} />
-							<Route
-								path='notyfications'
-								element={
-									isAuthorized ? (
-										<NotyficationData />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
-							<Route
-								path='order'
-								element={
-									isAuthorized ? (
-										<CartLayout />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
+							<Route path='notyfications' element={<NotyficationData />} />
+							<Route path='order' element={<CartLayout />} />
 						</Route>
 						<Route
 							path='logged/:user/personalData'
@@ -173,26 +127,8 @@ function App() {
 									<Navigate replace to='/login' />
 								)
 							}>
-							<Route
-								path='notyfications'
-								element={
-									isAuthorized ? (
-										<NotyficationData />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
-							<Route
-								path='order'
-								element={
-									isAuthorized ? (
-										<CartLayout />
-									) : (
-										<Navigate replace to='/login' />
-									)
-								}
-							/>
+							<Route path='notyfications' element={<NotyficationData />} />
+							<Route path='order' element={<CartLayout />} />
 						</Route>
 						<Route
 							path='Login'

@@ -10,7 +10,8 @@ import {
 	SET_MARKED,
 	SET_PAGE_COUNT,
 	START_SCROLL,
-	TOOGLE_CART
+	TOOGLE_CART,
+	TOOGLE_NOTYFICATION
 } from '../types';
 import { SET_COMMENT_START } from '../types';
 import { FETCH_COMMENT_START } from '../types';
@@ -82,4 +83,9 @@ export const start_scroll = {
 //-----------------ACTION WHICH CLEARS THE SCROLL DATA TO REDUCER---
 export const clear_scroll = {
 	type: CLEAR_SCROLL
+};
+
+//--------------------TOGGLE THE NOTYFICATION BAR----------
+export const toogle_notyfication = {
+	type: TOOGLE_NOTYFICATION
 };
