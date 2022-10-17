@@ -95,15 +95,13 @@ const MyProducts = () => {
 	const handleClickOpen = (typ) => {
 		setType(typ);
 		setOpen(true);
-		if (typ === 'add') {
-			navigate(`/logged/${email}/yourProduct/newProduct`);
-		} else {
-			navigate(`/logged/${email}/yourProduct/uploadProduct`);
-		}
+
+		navigate(`newProduct`);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
+		navigate(-1);
 		dataToStart();
 	};
 
@@ -172,6 +170,7 @@ const MyProducts = () => {
 
 	//------------INITIAL DATA FOR THE UPDATE DIALOG-------------
 	const handleUpdate = (id, typ) => {
+		navigate('updateProduct');
 		const prod2 = prod.filter((item) => item._id === id);
 		const {
 			image,

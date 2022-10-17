@@ -2,7 +2,6 @@
 
 import React, { useContext } from 'react';
 import UppBar from './UpBarr/UppBarr';
-import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/system';
 import styled from 'styled-components';
 import './completeApp.scss';

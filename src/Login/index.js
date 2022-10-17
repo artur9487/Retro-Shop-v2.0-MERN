@@ -101,7 +101,6 @@ const Login = () => {
 								Login Panel
 							</Typography>
 							<TextField
-								//className={classes.textField}
 								InputLabelProps={{
 									style: {
 										color: 'black',
@@ -111,7 +110,6 @@ const Login = () => {
 									}
 								}}
 								focused={false}
-								Input={{ color: 'secondary' }}
 								id='standard-basic'
 								label='Email'
 								variant='standard'

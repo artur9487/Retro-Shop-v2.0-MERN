@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 import AsideBar from './AsideBar';
 import ProductLayout from './ProductLayout';
-import { Outlet } from 'react-router-dom';
 import { Stack, Grid, Box, Typography } from '@mui/material';
 import CarouselSection from './Carousel';
 import Footer from '../Footer';
@@ -18,7 +17,7 @@ import { MainContext } from '../Context';
 import { execute_scroll } from '../redux/UI/actions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-//import { fetch_products } from '../redux/Products/actions';
+import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
 	const { maxWidth1200, maxWidth600, user } = useContext(MainContext);
@@ -132,6 +131,7 @@ const Layout = () => {
 					</Box>
 				</Stack>
 			</div>
+			<Outlet />
 			<Footer />
 		</>
 	);

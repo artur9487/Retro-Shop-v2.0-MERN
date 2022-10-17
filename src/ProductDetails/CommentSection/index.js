@@ -170,7 +170,6 @@ const CommentSection = () => {
 							label='Write your comment'
 							multiline
 							rows={4}
-							defaultValue=''
 							value={comment}
 							onChange={(e) => setComment(e.target.value)}
 						/>

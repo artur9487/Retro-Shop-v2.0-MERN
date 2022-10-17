@@ -67,7 +67,12 @@ const ProductDetails = () => {
 	//---------------------CLOSING DIALOG-----------------------
 	const handleClose = () => {
 		setOpen(false);
-		navigate(-1);
+		if (pathname === `/logged/${user?.email}/${productID}`) {
+			navigate(`/logged/${user.email}`);
+		} else {
+			navigate(-1);
+		}
+
 		setError(false);
 		setOrderCountError(false);
 	};

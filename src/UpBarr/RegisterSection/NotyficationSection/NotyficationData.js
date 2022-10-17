@@ -16,15 +16,14 @@ const NotyficationData = () => {
 		maxWidth600,
 		user: { email }
 	} = useContext(MainContext);
-	const { setAnchorEl, open, anchorEl, count } =
-		useContext(NotyficationContext);
+	const { setAnchorEl, open, anchorEl } = useContext(NotyficationContext);
 	const noty = useSelector((state) => state.UIData.notyfications);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const handleClose = (productID, type) => {
 		setAnchorEl(null);
-		if (type === 'commnent') {
+		if (type === 'comment') {
 			navigate(`/logged/${email}/${productID}`);
 		} else if (type === 'order') {
 			navigate(`/logged/${email}/personalData`);
@@ -44,9 +43,6 @@ const NotyficationData = () => {
 			notIdsOrders.push(item._id);
 		}
 
-		if (item.marked === false) {
-			count++;
-		}
 		if (item.type === 'comment') {
 			return (
 				<MenuItem

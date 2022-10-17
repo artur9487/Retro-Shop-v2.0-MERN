@@ -36,6 +36,8 @@ const DialogComp = () => {
 		handleQuan
 	} = useContext(Context);
 
+	console.log(productName);
+
 	const {
 		imageErr,
 		productNameErr,
