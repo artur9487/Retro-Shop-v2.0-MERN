@@ -39,7 +39,7 @@ function App() {
 	const maxWidth600 = useMediaQuery('(max-width:599px)');
 	const navigate = useNavigate();
 
-	axios.defaults.baseURL = 'http://localhost:3000';
+	axios.defaults.baseURL = 'https://retro-shop-mern.vercel.app';
 	const [isAuthorized, setIsAuthorized] = useState(false);
 
 	useEffect(() => {
