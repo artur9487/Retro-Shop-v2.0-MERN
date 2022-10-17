@@ -111,7 +111,7 @@ export function* fetchProducts({ payload }) {
 			const notyfications = response.data.notyfications;
 			yield put(fetch_notyfication_end(notyfications));
 		} else {
-			response = yield axios.get('http://localhost:5000/', {
+			response = yield axios.get('https://retro-shop-mern.vercel.app', {
 				params: { pageNumber: payload.page, nPerPage: payload.limit }
 			});
 		}
