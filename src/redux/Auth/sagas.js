@@ -5,11 +5,13 @@ import { LOGIN_USER_START, REGISTER_USER_START, SIGN_OUT } from '../types';
 import { set_current_user_end, log_error } from './actions';
 import axios from 'axios';
 
+const mainUrl = process.env.PORT || 'http://localhost:5000';
+
 //---------------------REGISTER THE USER---------------------
 export function* registerUserStart({ payload }) {
 	const { email, password } = payload;
 	try {
-		const response = yield axios.post('http://localhost:5000/Register', {
+		const response = yield axios.post(`${mainUrl}/Register`, {
 			email: email,
 			password: password
 		});
@@ -31,7 +33,7 @@ export function* loginUserStart({ payload }) {
 	const { email, password } = payload;
 
 	try {
-		const response = yield axios.post('http://localhost:5000/Login', {
+		const response = yield axios.post(`${mainUrl}/Login`, {
 			email: email,
 			password: password
 		});

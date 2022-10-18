@@ -28,6 +28,10 @@ import {
 import { fetch_notyfication_end } from '../UI/actions';
 import { add_order_end } from './actions';
 
+const mainUrl = process.env.PORT || 'http://localhost:5000';
+
+//--------------UPDATE THE IMAGE IN YOUR PRODUCT---------
+
 export function* setUpdateProductImage({ payload }) {
 	try {
 		const formData = new FormData();
@@ -36,7 +40,7 @@ export function* setUpdateProductImage({ payload }) {
 			console.log(pair[0] + ', ' + pair[1]);
 		}
 		const response = yield axios.post(
-			`http://localhost:5000/logged/${payload.email}/yourProduct/updateProduct`,
+			`${mainUrl}/logged/${payload.email}/yourProduct/updateProduct`,
 			formData
 		);
 
@@ -52,6 +56,8 @@ export function* onSetUpdateProductImage() {
 	yield takeLatest(SET_UPDATED_PRODUCT_IMAGE, setUpdateProductImage);
 }
 
+//--------------SET A NEW IMAGE IN YOUR PRODUCT---------
+
 export function* setNewProductImage({ payload }) {
 	try {
 		const formData = new FormData();
@@ -60,7 +66,7 @@ export function* setNewProductImage({ payload }) {
 			console.log(pair[0] + ', ' + pair[1]);
 		}
 		const response = yield axios.post(
-			`http://localhost:5000/logged/${payload.email}/yourProduct/newProduct`,
+			`${mainUrl}}/logged/${payload.email}/yourProduct/newProduct`,
 			formData
 		);
 
@@ -83,7 +89,7 @@ export function* setProductStart({ payload }) {
 		const { email } = payload;
 
 		yield axios
-			.post(`http://localhost:5000/logged/${email}/yourProduct`, payload)
+			.post(`${mainUrl}/logged/${email}/yourProduct`, payload)
 			.then(() => console.log('Product Added'));
 		yield put(fetch_my_products_start(payload.email));
 		yield put(clear_image);
@@ -105,13 +111,13 @@ export function* fetchProducts({ payload }) {
 		if (payload.user) {
 			const { email } = payload.user;
 
-			response = yield axios.get(`http://localhost:5000/logged/${email}`, {
+			response = yield axios.get(`${mainUrl}/logged/${email}`, {
 				params: { pageNumber: payload.page, nPerPage: payload.limit }
 			});
 			const notyfications = response.data.notyfications;
 			yield put(fetch_notyfication_end(notyfications));
 		} else {
-			response = yield axios.get('https://retro-shop-mern.vercel.app', {
+			response = yield axios.get(`${mainUrl}`, {
 				params: { pageNumber: payload.page, nPerPage: payload.limit }
 			});
 		}
@@ -140,7 +146,7 @@ export function* deleteProductStart({ payload }) {
 	try {
 		const { email } = payload;
 		yield axios
-			.delete(`http://localhost:5000/logged/${email}/yourProduct`, {
+			.delete(`${mainUrl}/logged/${email}/yourProduct`, {
 				params: { id: payload.id }
 			})
 			.then(() => console.log('Product deleted'));
@@ -159,7 +165,7 @@ export function* updateProductStart({ payload }) {
 	try {
 		const { email } = payload.product;
 		yield axios
-			.put(`http://localhost:5000/logged/${email}/yourProduct`, payload)
+			.put(`${mainUrl}/logged/${email}/yourProduct`, payload)
 			.then(() => console.log('Product updated'));
 
 		yield put(fetch_my_products_start(email));
@@ -219,7 +225,7 @@ export function* orderNotyfication(payload) {
 		}
 
 		yield axios
-			.post(`http://localhost:5000/logged/${email}/order`, {
+			.post(`${mainUrl}/logged/${email}/order`, {
 				order: order,
 				newArr: newArr
 			})
@@ -252,7 +258,7 @@ export function* addOrderStart({ payload }) {
 
 		if (deleteDocuments.length > 0) {
 			yield axios
-				.delete(`http://localhost:5000/logged/${email}/order`, {
+				.delete(`${mainUrl}/logged/${email}/order`, {
 					params: {
 						deleteDocuments
 					}
@@ -263,7 +269,7 @@ export function* addOrderStart({ payload }) {
 
 		if (updateDocuments.length > 0) {
 			yield axios
-				.put(`http://localhost:5000/logged/${email}/order`, updateDocuments)
+				.put(`${mainUrl}/logged/${email}/order`, updateDocuments)
 				.then(() => console.log('Some products updated'))
 				.catch((err) => console.log(`${err} occured`));
 		}
@@ -284,9 +290,7 @@ export function* onAddOrder() {
 export function* fetchOrders({ payload }) {
 	try {
 		const user = payload;
-		const response = yield axios.get(
-			`http://localhost:5000/logged/${user}/personalData`
-		);
+		const response = yield axios.get(`${mainUrl}/logged/${user}/personalData`);
 
 		const querySnapshot = response.data.orders;
 		const querySnapshot2 = response.data.notyfications;
@@ -306,9 +310,7 @@ export function* onFetchOrders() {
 export function* fetchMyProductsStart({ payload }) {
 	try {
 		const user = payload;
-		const response = yield axios.get(
-			`http://localhost:5000/logged/${user}/yourProduct`
-		);
+		const response = yield axios.get(`${mainUrl}/logged/${user}/yourProduct`);
 		const querySnapshot = response.data;
 
 		yield put(fetch_my_products_end(querySnapshot));
@@ -323,7 +325,7 @@ export function* onFetchMyProducts() {
 
 //---------------GET THE NUMBER OF THE PRODUCTS FOR THE PAGINATION------------
 export function* getProductNumber() {
-	const response = yield axios.get('http://localhost:5000');
+	const response = yield axios.get(`${mainUrl}`);
 	const products = response.data;
 	let docNumber = 0;
 	products.forEach(() => {

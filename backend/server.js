@@ -3,11 +3,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const path = require('path');
-const fs = require('fs');
 const multer = require('multer');
-var imageModel = require('./models/imageModel');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const { initializeApp } = require('firebase/app');
