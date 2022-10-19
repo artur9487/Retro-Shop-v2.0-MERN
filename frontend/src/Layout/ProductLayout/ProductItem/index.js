@@ -12,22 +12,34 @@ import { Box } from '@mui/system';
 import './index.scss';
 import { Stack } from '@mui/material';
 import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { MainContext } from '../../../Context';
 
 const ProductItem = (item) => {
 	const navigate = useNavigate();
 	const { productName, productPrice, _id, image } = item;
 	const [open, setOpen] = useState(false);
+	const location = useLocation();
+	const { pathname } = location;
+	const { user } = useContext(MainContext);
 
 	const handleClick = () => {
-		navigate(`/api/${_id}`);
+		if (pathname === `/api/logged/${user?.email}`) {
+			navigate(`/api/logged/${user?.email}/${_id}`);
+		} else if (pathname === `/api` || pathname === '/') {
+			navigate(`/api/${_id}`);
+		}
+
 		setOpen(true);
 	};
 
 	useEffect(() => {
 		return () => setOpen(false);
 	}, [open]);
+
+	console.log(open);
 
 	return (
 		<>

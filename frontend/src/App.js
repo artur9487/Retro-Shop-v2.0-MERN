@@ -78,13 +78,13 @@ function App() {
 							exact
 							path='/'
 							element={
-								toto ? (
-									<CompleteApp>
-										<AllProducts />
-									</CompleteApp>
-								) : (
+								//	toto ? (
+								<CompleteApp>
+									<AllProducts />
+								</CompleteApp>
+								/*	) : (
 									<Navigate replace to='/api' />
-								)
+								)*/
 							}></Route>
 						<Route
 							exact
@@ -94,7 +94,7 @@ function App() {
 									<AllProducts />
 								</CompleteApp>
 							}>
-							<Route exact path=':productID' element={<ProductDetails />} />
+							<Route path=':productID' element={<ProductDetails />} />
 						</Route>
 						<Route
 							exact
