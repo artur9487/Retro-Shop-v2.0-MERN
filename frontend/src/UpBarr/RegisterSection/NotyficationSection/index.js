@@ -63,8 +63,8 @@ const NotyficationSection = () => {
 					anchorEl,
 					open
 				}}>
-				{pathname === `/logged/${email}/yourProduct/newProduct` ||
-				pathname === `/logged/${email}/yourProduct/updateProduct` ? null : (
+				{pathname === `/api/logged/${email}/yourProduct/newProduct` ||
+				pathname === `/api/logged/${email}/yourProduct/updateProduct` ? null : (
 					<Outlet />
 				)}
 			</NotyficationContext.Provider>

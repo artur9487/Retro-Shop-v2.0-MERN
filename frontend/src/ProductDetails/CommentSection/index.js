@@ -154,64 +154,69 @@ const CommentSection = () => {
 						)}
 					</List>
 				</div>
-				{user && pathname !== `/logged/${user.email}/yourProduct/${productID}` && (
-					<Stack sx={{ mt: 3 }} spacing={2} direction='column'>
-						<CustomTextField
-							InputLabelProps={{
-								style: {
-									color: 'black',
-									fontFamily: 'Sofia',
-									fontStyle: 'italic',
-									fontSize: 18
-								}
-							}}
-							sx={{ color: 'black' }}
-							id='outlined-multiline-static'
-							label='Write your comment'
-							multiline
-							rows={4}
-							value={comment}
-							onChange={(e) => setComment(e.target.value)}
-						/>
-						<Stack direction='row' justifyContent='space-evenly'>
-							<Typography
-								variant='body1'
-								sx={{ fontFamily: 'Sofia', fontSize: 18, fontStyle: 'italic' }}>
-								Set your rating:
-							</Typography>
-							<Rating
-								name='simple-controlled'
-								value={value}
-								precision={1}
-								onChange={(event, newValue) => {
-									setValue(newValue);
+				{user &&
+					pathname !== `/api/logged/${user.email}/yourProduct/${productID}` && (
+						<Stack sx={{ mt: 3 }} spacing={2} direction='column'>
+							<CustomTextField
+								InputLabelProps={{
+									style: {
+										color: 'black',
+										fontFamily: 'Sofia',
+										fontStyle: 'italic',
+										fontSize: 18
+									}
 								}}
+								sx={{ color: 'black' }}
+								id='outlined-multiline-static'
+								label='Write your comment'
+								multiline
+								rows={4}
+								value={comment}
+								onChange={(e) => setComment(e.target.value)}
 							/>
+							<Stack direction='row' justifyContent='space-evenly'>
+								<Typography
+									variant='body1'
+									sx={{
+										fontFamily: 'Sofia',
+										fontSize: 18,
+										fontStyle: 'italic'
+									}}>
+									Set your rating:
+								</Typography>
+								<Rating
+									name='simple-controlled'
+									value={value}
+									precision={1}
+									onChange={(event, newValue) => {
+										setValue(newValue);
+									}}
+								/>
+							</Stack>
+							{error && (
+								<Typography
+									textAlign='center'
+									className={fadeIn2}
+									sx={{ fontFamily: 'Sofia', fontSize: 18, color: 'red' }}>
+									Comment not complete
+								</Typography>
+							)}
+							<Stack direction='row' justifyContent='center'>
+								<Button
+									color='inherit'
+									sx={{
+										fontFamily: OleoFont,
+										fontSize: 20,
+										width: !maxWidth600 ? '50%' : '75%',
+										textTransform: 'none',
+										color: 'black'
+									}}
+									onClick={commentHandler}>
+									Add Comment
+								</Button>
+							</Stack>
 						</Stack>
-						{error && (
-							<Typography
-								textAlign='center'
-								className={fadeIn2}
-								sx={{ fontFamily: 'Sofia', fontSize: 18, color: 'red' }}>
-								Comment not complete
-							</Typography>
-						)}
-						<Stack direction='row' justifyContent='center'>
-							<Button
-								color='inherit'
-								sx={{
-									fontFamily: OleoFont,
-									fontSize: 20,
-									width: !maxWidth600 ? '50%' : '75%',
-									textTransform: 'none',
-									color: 'black'
-								}}
-								onClick={commentHandler}>
-								Add Comment
-							</Button>
-						</Stack>
-					</Stack>
-				)}
+					)}
 			</Stack>
 		</>
 	);

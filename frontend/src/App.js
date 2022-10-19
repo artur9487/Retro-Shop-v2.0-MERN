@@ -98,7 +98,7 @@ function App() {
 						</Route>
 						<Route
 							exact
-							path='api/login/logged/:user'
+							path='api/logged/:user'
 							element={
 								isAuthorized ? (
 									<CompleteApp>

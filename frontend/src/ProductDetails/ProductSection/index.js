@@ -111,50 +111,51 @@ const ProductSection = () => {
 					of {ratingCount} ratings
 				</Typography>
 			</Stack>
-			{user && pathname !== `/logged/${user.email}/yourProduct/${productID}` && (
-				<>
-					<Stack direction='row' alignItems='center' spacing={2}>
-						<CustomTextField
-							color='primary'
-							sx={{ width: 70 }}
-							size='small'
-							required
-							type='number'
-							value={count}
-							InputProps={{ inputProps: { min: 0, max: productQuantity } }}
-							onChange={(e) => setCount(e.target.value)}
-						/>
-						<Typography
-							sx={{ fontFamily: 'Sofia', fontSize: 15 }}
-							component='span'>
-							from {productQuantity} pieces
-						</Typography>
-					</Stack>
-					{orderCountError && (
-						<Typography
-							textAlign='center'
-							className={fadeIn2}
-							sx={{ fontFamily: 'Sofia', fontSize: 18, color: 'red' }}>
-							Invalid order count
-						</Typography>
-					)}
-					<Stack direction='row' justifyContent='center'>
-						<Button
-							color='inherit'
-							sx={{
-								margin: 'auto',
-								fontFamily: OleoFont,
-								fontSize: 20,
-								width: '40%',
-								textTransform: 'none',
-								color: 'black'
-							}}
-							onClick={handleAdd}>
-							Add to cart!
-						</Button>
-					</Stack>
-				</>
-			)}
+			{user &&
+				pathname !== `/api/logged/${user.email}/yourProduct/${productID}` && (
+					<>
+						<Stack direction='row' alignItems='center' spacing={2}>
+							<CustomTextField
+								color='primary'
+								sx={{ width: 70 }}
+								size='small'
+								required
+								type='number'
+								value={count}
+								InputProps={{ inputProps: { min: 0, max: productQuantity } }}
+								onChange={(e) => setCount(e.target.value)}
+							/>
+							<Typography
+								sx={{ fontFamily: 'Sofia', fontSize: 15 }}
+								component='span'>
+								from {productQuantity} pieces
+							</Typography>
+						</Stack>
+						{orderCountError && (
+							<Typography
+								textAlign='center'
+								className={fadeIn2}
+								sx={{ fontFamily: 'Sofia', fontSize: 18, color: 'red' }}>
+								Invalid order count
+							</Typography>
+						)}
+						<Stack direction='row' justifyContent='center'>
+							<Button
+								color='inherit'
+								sx={{
+									margin: 'auto',
+									fontFamily: OleoFont,
+									fontSize: 20,
+									width: '40%',
+									textTransform: 'none',
+									color: 'black'
+								}}
+								onClick={handleAdd}>
+								Add to cart!
+							</Button>
+						</Stack>
+					</>
+				)}
 		</Stack>
 	);
 };

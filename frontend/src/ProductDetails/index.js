@@ -39,7 +39,7 @@ const ProductDetails = () => {
 
 	let productDataArr;
 
-	if (pathname !== `/logged/${user?.email}/yourProduct/${productID}`) {
+	if (pathname !== `/api/logged/${user?.email}/yourProduct/${productID}`) {
 		productDataArr = proProduct;
 	} else {
 		productDataArr = myProducts;
@@ -67,7 +67,7 @@ const ProductDetails = () => {
 	//---------------------CLOSING DIALOG-----------------------
 	const handleClose = () => {
 		setOpen(false);
-		if (pathname === `/logged/${user?.email}/${productID}`) {
+		if (pathname === `/api/logged/${user?.email}/${productID}`) {
 			navigate(`/api/logged/${user.email}`);
 		} else {
 			navigate(-1);
