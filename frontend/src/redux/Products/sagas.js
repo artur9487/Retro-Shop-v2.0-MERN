@@ -111,7 +111,7 @@ export function* fetchProducts({ payload }) {
 		if (payload.user) {
 			const { email } = payload.user;
 
-			response = yield axios.get(`${mainUrl}/logged/${email}`, {
+			response = yield axios.get(`${mainUrl}/login/logged/${email}`, {
 				params: { pageNumber: payload.page, nPerPage: payload.limit }
 			});
 			const notyfications = response.data.notyfications;
