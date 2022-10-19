@@ -3,33 +3,11 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const multer = require('multer');
+const path = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const { initializeApp } = require('firebase/app');
 const { getAuth } = require('firebase/auth');
-const AuthRoute = require('./fbAuth.js');
-if (process.env.NODE_ENV !== 'production') {
-	require('dotenv').config({ path: __dirname + '/.env' });
-}
-const {
-	postYourProduct,
-	getStartPage,
-	getMainPage,
-	deleteProduct,
-	getProducts,
-	postOrder,
-	deleteProductsAfterOrdering,
-	updateProductsAfterOrdering,
-	getPersonalData,
-	postComment,
-	getComments,
-	markNotyfications,
-	register,
-	login,
-	updateyourProduct,
-	postNewProductImage
-} = require('./api/mainRoute');
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_API_KEY,
@@ -63,33 +41,8 @@ connection.once('open', () => {
 	console.log('MongoDB database connection established successfully');
 });
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage }).single('file');
+app.use('/', require(path.join(__dirname, 'api', 'endpoinst.js')));
 
-app.post('/logged/:user/yourProduct/newProduct', upload, postNewProductImage);
-app.post(
-	'/logged/:user/yourProduct/updateProduct',
-	upload,
-	postNewProductImage
-);
-app.post('/logged/:user/yourProduct', postYourProduct);
-app.get('/', getStartPage);
-app.get('/:productID', getComments);
-app.get('/logged/:user', getMainPage);
-app.delete('/logged/:user/yourProduct', AuthRoute, deleteProduct);
-app.get('/logged/:user/yourProduct', getProducts);
-app.post('/logged/:user/order', postOrder);
-app.delete('/logged/:user/order', deleteProductsAfterOrdering);
-app.put('/logged/:user/yourProduct', updateyourProduct);
-app.put('/logged/:user/order', updateProductsAfterOrdering);
-app.get('/logged/:user/personalData', getPersonalData);
-app.post('/logged/:user/:productID', postComment);
-app.get('/logged/:user/:productID', getComments);
-app.put('/logged/:user/notyfications', markNotyfications);
-app.put('/logged/:user/yourProduct/notyfications', markNotyfications);
-app.put('/logged/:user/personalData/notyfications', markNotyfications);
-app.post('/register', register);
-app.post('/login', login);
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, '../frontend', 'build')));
 	app.get('/*', (req, res) => {
