@@ -21,7 +21,7 @@ const ProductItem = (item) => {
 	const [open, setOpen] = useState(false);
 
 	const handleClick = () => {
-		navigate(`${_id}`);
+		navigate(`/api/${_id}`);
 		setOpen(true);
 	};
 

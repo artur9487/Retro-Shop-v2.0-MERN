@@ -38,6 +38,7 @@ function App() {
 	const maxWidth900 = useMediaQuery('(max-width:899px)');
 	const maxWidth600 = useMediaQuery('(max-width:599px)');
 	const navigate = useNavigate();
+	const toto = true;
 
 	axios.defaults.baseURL = 'https://retro-shop-mern.vercel.app';
 	const [isAuthorized, setIsAuthorized] = useState(false);
@@ -50,7 +51,7 @@ function App() {
 			const decodedToken = jwtDecode(token);
 			if (decodedToken.exp * 1000 < Date.now()) {
 				dispatch(sign_out);
-				navigate(`/`);
+				navigate(`/api`);
 				setIsAuthorized(false);
 			} else {
 				if (!userData) {
@@ -77,6 +78,18 @@ function App() {
 							exact
 							path='/'
 							element={
+								toto ? (
+									<CompleteApp>
+										<AllProducts />
+									</CompleteApp>
+								) : (
+									<Navigate replace to='/api' />
+								)
+							}></Route>
+						<Route
+							exact
+							path='/api'
+							element={
 								<CompleteApp>
 									<AllProducts />
 								</CompleteApp>
@@ -85,14 +98,14 @@ function App() {
 						</Route>
 						<Route
 							exact
-							path='login/logged/:user'
+							path='api/login/logged/:user'
 							element={
 								isAuthorized ? (
 									<CompleteApp>
 										<AllProducts />
 									</CompleteApp>
 								) : (
-									<Navigate replace to='/login' />
+									<Navigate replace to='/api/login' />
 								)
 							}>
 							<Route path=':productID' element={<ProductDetails />} />
@@ -100,14 +113,14 @@ function App() {
 							<Route path='notyfications' element={<NotyficationData />} />
 						</Route>
 						<Route
-							path='logged/:user/yourProduct'
+							path='api/logged/:user/yourProduct'
 							element={
 								isAuthorized ? (
 									<CompleteApp>
 										<MyProducts />
 									</CompleteApp>
 								) : (
-									<Navigate replace to='/login' />
+									<Navigate replace to='/api/login' />
 								)
 							}>
 							<Route path=':productID' element={<ProductDetails />} />
@@ -117,21 +130,21 @@ function App() {
 							<Route path='order' element={<CartLayout />} />
 						</Route>
 						<Route
-							path='logged/:user/personalData'
+							path='api/logged/:user/personalData'
 							element={
 								isAuthorized ? (
 									<CompleteApp>
 										<PersonalData />
 									</CompleteApp>
 								) : (
-									<Navigate replace to='/login' />
+									<Navigate replace to='/api/login' />
 								)
 							}>
 							<Route path='notyfications' element={<NotyficationData />} />
 							<Route path='order' element={<CartLayout />} />
 						</Route>
 						<Route
-							path='Login'
+							path='api/Login'
 							element={
 								<CompleteApp>
 									<Login />
@@ -139,7 +152,7 @@ function App() {
 							}
 						/>
 						<Route
-							path='Register'
+							path='api/Register'
 							element={
 								<CompleteApp>
 									<Register />

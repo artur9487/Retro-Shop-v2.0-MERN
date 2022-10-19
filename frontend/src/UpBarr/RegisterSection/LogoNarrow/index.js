@@ -36,9 +36,9 @@ const LogoNarrow = ({
 
 	const handleNav = () => {
 		if (user) {
-			navigate(`/logged/${user.email}`);
+			navigate(`/api/logged/${user.email}`);
 		} else {
-			navigate('/');
+			navigate('/api');
 		}
 	};
 
@@ -79,7 +79,7 @@ const LogoNarrow = ({
 						{pages.map((page, indx) => (
 							<MenuItem key={indx} onClick={handleCloseNavMenu}>
 								<Link
-									to={`logged/${user.email}/${page.navLink}`}
+									to={`api/logged/${user.email}/${page.navLink}`}
 									className='links'>
 									<Typography
 										sx={{ color: 'black', fontFamily: 'Sofia', fontSize: 20 }}

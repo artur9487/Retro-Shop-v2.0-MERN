@@ -24,9 +24,9 @@ const NotyficationData = () => {
 	//-----------FUNTIONALITY WHEN CLOSING THE MODAL--------
 	const handleClose = (productID, type) => {
 		if (type === 'comment') {
-			navigate(`/logged/${email}/${productID}`);
+			navigate(`/api/logged/${email}/${productID}`);
 		} else if (type === 'order') {
-			navigate(`/logged/${email}/personalData`);
+			navigate(`/api/logged/${email}/personalData`);
 		} else {
 			navigate(-1);
 		}

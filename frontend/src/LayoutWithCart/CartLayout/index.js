@@ -15,7 +15,6 @@ import {
 	clear_cart
 } from '../../redux/Products/actions';
 import { MainContext } from '../../Context';
-import useCustomFadeHook from '../../customHooks/customFadeHook';
 import { useNavigate } from 'react-router-dom';
 
 const CartLayout = () => {

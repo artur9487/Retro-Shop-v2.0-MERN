@@ -42,8 +42,8 @@ const OptionBar = ({ handleCloseNavMenu, pages }) => {
 					onClick={handleCloseNavMenu}
 					to={
 						item.navLink !== ''
-							? `/logged/${user.email}/${item.navLink}`
-							: `/logged/${user.email}`
+							? `/api/logged/${user.email}/${item.navLink}`
+							: `/api/logged/${user.email}`
 					}
 					className='links'>
 					<Button

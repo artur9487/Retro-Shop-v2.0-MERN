@@ -45,7 +45,7 @@ const Register = () => {
 			if (logError) {
 				return;
 			} else {
-				navigate(`/logged/${user.email}`);
+				navigate(`/api/logged/${user.email}`);
 			}
 		}
 	}, [logError, user, navigate]);

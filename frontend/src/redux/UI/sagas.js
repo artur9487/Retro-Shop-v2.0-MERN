@@ -21,7 +21,7 @@ export function* setCommentStart({ payload }) {
 
 	try {
 		yield axios
-			.post(`${mainUrl}/logged/${user.email}/${productID}`, obj)
+			.post(`${mainUrl}/api/logged/${user.email}/${productID}`, obj)
 			.then(() => console.log('Comment notyfication added'));
 
 		yield put(fetch_comments_start(productID));
@@ -42,12 +42,12 @@ export function* fetchCommentsStart({ payload }) {
 		const { productID, user } = payload;
 		if (user) {
 			const response = yield axios.get(
-				`${mainUrl}/logged/${user.email}/${productID}`
+				`${mainUrl}/api/logged/${user.email}/${productID}`
 			);
 
 			comments = response.data;
 		} else {
-			const response = yield axios.get(`${mainUrl}/${productID}`);
+			const response = yield axios.get(`${mainUrl}/api/${productID}`);
 
 			comments = response.data;
 		}
@@ -66,9 +66,9 @@ export function* setMarked({ payload }) {
 	const { notIdsOrders, notIdsComments, receiver } = payload;
 
 	let endpoints = [
-		`${mainUrl}/logged/${receiver}/notyfications`,
-		`${mainUrl}/logged/${receiver}/yourProduct/notyfications`,
-		`${mainUrl}/logged/${receiver}/personalData/notyfications`
+		`${mainUrl}/api/logged/${receiver}/notyfications`,
+		`${mainUrl}/api/logged/${receiver}/yourProduct/notyfications`,
+		`${mainUrl}/api/logged/${receiver}/personalData/notyfications`
 	];
 
 	try {

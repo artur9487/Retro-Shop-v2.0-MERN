@@ -21,9 +21,9 @@ const LogoWide = () => {
 
 	const handleNav = () => {
 		if (user) {
-			navigate(`/logged/${user.email}`);
+			navigate(`/api/logged/${user.email}`);
 		} else {
-			navigate(`/`);
+			navigate(`/api`);
 		}
 	};
 

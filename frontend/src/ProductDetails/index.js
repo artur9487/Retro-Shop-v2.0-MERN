@@ -68,7 +68,7 @@ const ProductDetails = () => {
 	const handleClose = () => {
 		setOpen(false);
 		if (pathname === `/logged/${user?.email}/${productID}`) {
-			navigate(`/logged/${user.email}`);
+			navigate(`/api/logged/${user.email}`);
 		} else {
 			navigate(-1);
 		}

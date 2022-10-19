@@ -25,7 +25,7 @@ const WhenUnlogged = ({ handleCloseNavMenu }) => {
 				alignItems='center'
 				className={fadeIn}>
 				{registerPages.map((item, indx) => (
-					<Link key={indx} className='links' to={item.navLink}>
+					<Link key={indx} className='links' to={`/api/${item.navLink}`}>
 						<Button
 							color='inherit'
 							key={item.navName}

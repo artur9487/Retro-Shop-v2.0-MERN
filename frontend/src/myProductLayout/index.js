@@ -381,7 +381,7 @@ const MyProducts = () => {
 															<IconButton
 																onClick={() =>
 																	navigate(
-																		`/logged/${email}/yourProduct/${row._id}`
+																		`/api/logged/${email}/yourProduct/${row._id}`
 																	)
 																}>
 																<DirectionsIcon />

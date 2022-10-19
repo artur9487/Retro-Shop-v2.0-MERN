@@ -41,7 +41,7 @@ const Login = () => {
 			if (logError) {
 				return;
 			} else {
-				navigate(`/login/logged/${user.email}`);
+				navigate(`/api/login/logged/${user.email}`);
 			}
 		}
 	}, [logError, user, navigate]);

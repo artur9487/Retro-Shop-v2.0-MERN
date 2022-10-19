@@ -40,7 +40,7 @@ export function* setUpdateProductImage({ payload }) {
 			console.log(pair[0] + ', ' + pair[1]);
 		}
 		const response = yield axios.post(
-			`${mainUrl}/logged/${payload.email}/yourProduct/updateProduct`,
+			`${mainUrl}/api/logged/${payload.email}/yourProduct/updateProduct`,
 			formData
 		);
 
@@ -66,7 +66,7 @@ export function* setNewProductImage({ payload }) {
 			console.log(pair[0] + ', ' + pair[1]);
 		}
 		const response = yield axios.post(
-			`${mainUrl}}/logged/${payload.email}/yourProduct/newProduct`,
+			`${mainUrl}}/api/logged/${payload.email}/yourProduct/newProduct`,
 			formData
 		);
 
@@ -89,7 +89,7 @@ export function* setProductStart({ payload }) {
 		const { email } = payload;
 
 		yield axios
-			.post(`${mainUrl}/logged/${email}/yourProduct`, payload)
+			.post(`${mainUrl}/api/logged/${email}/yourProduct`, payload)
 			.then(() => console.log('Product Added'));
 		yield put(fetch_my_products_start(payload.email));
 		yield put(clear_image);
@@ -111,13 +111,13 @@ export function* fetchProducts({ payload }) {
 		if (payload.user) {
 			const { email } = payload.user;
 
-			response = yield axios.get(`${mainUrl}/login/logged/${email}`, {
+			response = yield axios.get(`${mainUrl}/api/logged/${email}`, {
 				params: { pageNumber: payload.page, nPerPage: payload.limit }
 			});
 			const notyfications = response.data.notyfications;
 			yield put(fetch_notyfication_end(notyfications));
 		} else {
-			response = yield axios.get(`${mainUrl}`, {
+			response = yield axios.get(`${mainUrl}/api`, {
 				params: { pageNumber: payload.page, nPerPage: payload.limit }
 			});
 		}
@@ -146,7 +146,7 @@ export function* deleteProductStart({ payload }) {
 	try {
 		const { email } = payload;
 		yield axios
-			.delete(`${mainUrl}/logged/${email}/yourProduct`, {
+			.delete(`${mainUrl}/api/logged/${email}/yourProduct`, {
 				params: { id: payload.id }
 			})
 			.then(() => console.log('Product deleted'));
@@ -165,7 +165,7 @@ export function* updateProductStart({ payload }) {
 	try {
 		const { email } = payload.product;
 		yield axios
-			.put(`${mainUrl}/logged/${email}/yourProduct`, payload)
+			.put(`${mainUrl}/api/logged/${email}/yourProduct`, payload)
 			.then(() => console.log('Product updated'));
 
 		yield put(fetch_my_products_start(email));
@@ -225,7 +225,7 @@ export function* orderNotyfication(payload) {
 		}
 
 		yield axios
-			.post(`${mainUrl}/logged/${email}/order`, {
+			.post(`${mainUrl}/api/logged/${email}/order`, {
 				order: order,
 				newArr: newArr
 			})
@@ -258,7 +258,7 @@ export function* addOrderStart({ payload }) {
 
 		if (deleteDocuments.length > 0) {
 			yield axios
-				.delete(`${mainUrl}/logged/${email}/order`, {
+				.delete(`${mainUrl}/api/logged/${email}/order`, {
 					params: {
 						deleteDocuments
 					}
@@ -269,7 +269,7 @@ export function* addOrderStart({ payload }) {
 
 		if (updateDocuments.length > 0) {
 			yield axios
-				.put(`${mainUrl}/logged/${email}/order`, updateDocuments)
+				.put(`${mainUrl}/api/logged/${email}/order`, updateDocuments)
 				.then(() => console.log('Some products updated'))
 				.catch((err) => console.log(`${err} occured`));
 		}
@@ -290,7 +290,9 @@ export function* onAddOrder() {
 export function* fetchOrders({ payload }) {
 	try {
 		const user = payload;
-		const response = yield axios.get(`${mainUrl}/logged/${user}/personalData`);
+		const response = yield axios.get(
+			`${mainUrl}/api/logged/${user}/personalData`
+		);
 
 		const querySnapshot = response.data.orders;
 		const querySnapshot2 = response.data.notyfications;
@@ -310,7 +312,9 @@ export function* onFetchOrders() {
 export function* fetchMyProductsStart({ payload }) {
 	try {
 		const user = payload;
-		const response = yield axios.get(`${mainUrl}/logged/${user}/yourProduct`);
+		const response = yield axios.get(
+			`${mainUrl}/api/logged/${user}/yourProduct`
+		);
 		const querySnapshot = response.data;
 
 		yield put(fetch_my_products_end(querySnapshot));
@@ -325,7 +329,7 @@ export function* onFetchMyProducts() {
 
 //---------------GET THE NUMBER OF THE PRODUCTS FOR THE PAGINATION------------
 export function* getProductNumber() {
-	const response = yield axios.get(`${mainUrl}`);
+	const response = yield axios.get(`${mainUrl}/api`);
 	const products = response.data;
 	let docNumber = 0;
 	products.forEach(() => {

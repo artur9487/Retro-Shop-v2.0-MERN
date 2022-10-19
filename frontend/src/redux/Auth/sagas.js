@@ -11,7 +11,7 @@ const mainUrl = process.env.PORT || 'http://localhost:5000';
 export function* registerUserStart({ payload }) {
 	const { email, password } = payload;
 	try {
-		const response = yield axios.post(`${mainUrl}/Register`, {
+		const response = yield axios.post(`${mainUrl}/api/Register`, {
 			email: email,
 			password: password
 		});
@@ -33,7 +33,7 @@ export function* loginUserStart({ payload }) {
 	const { email, password } = payload;
 
 	try {
-		const response = yield axios.post(`${mainUrl}/Login`, {
+		const response = yield axios.post(`${mainUrl}/api/Login`, {
 			email: email,
 			password: password
 		});

@@ -51,6 +51,6 @@ router.put('/logged/:user/notyfications', markNotyfications);
 router.put('/logged/:user/yourProduct/notyfications', markNotyfications);
 router.put('/logged/:user/personalData/notyfications', markNotyfications);
 router.post('/register', register);
-router.post('/', login);
+router.post('/login', login);
 
 module.exports = router;
