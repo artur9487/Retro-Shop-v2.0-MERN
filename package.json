@@ -7,7 +7,7 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"start": "node backend/index.js",
-		"heroku-postbuild": "cd client && npm install && npm run build"
+		"heroku-postbuild": "cd frontend && npm install && npm run build"
 	},
 	"keywords": [],
 	"author": "",
