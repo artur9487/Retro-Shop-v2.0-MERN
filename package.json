@@ -1,9 +1,19 @@
 {
-	"homepage": "https://retro-shop-mern.vercel.app",
-	"name": "my-react-app",
-	"version": "0.1.0",
-	"private": true,
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"start": "node backend/index.js",
+		"heroku-postbuild": "cd client && npm install && npm run build"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
 	"dependencies": {
+		"mongoose": "^6.6.1",
 		"@emotion/react": "^11.7.1",
 		"@emotion/styled": "^11.6.0",
 		"@material-ui/core": "^4.12.4",
@@ -26,7 +36,6 @@
 		"firebase": "^9.11.0",
 		"firebase-admin": "^10.3.0",
 		"firebase-functions": "^3.18.1",
-		"heroku": "^7.65.0",
 		"jwt-decode": "^3.1.2",
 		"moment": "^2.29.1",
 		"multer": "^1.4.5-lts.1",
@@ -48,37 +57,6 @@
 		"uuidv4": "^6.2.13",
 		"web-vitals": "^2.1.4",
 		"xhr2": "^0.2.1"
-	},
-	"scripts": {
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject",
-		"install-client": "cd frontend && npm install",
-		"heroku-postbuild": "npm run install-client && npm run build",
-		"server": "nodemon server.js",
-		"develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
-		"start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
-	"devDependencies": {
-		"webpack": "^5.70.0"
 	},
 	"engines": {
 		"node": "16.14.2"

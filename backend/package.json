@@ -6,12 +6,8 @@
 	"scripts": {
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject",
-		"install-client": "cd frontend && npm install",
-		"heroku-postbuild": "npm run install-client && npm run build",
-		"server": "nodemon server.js",
-		"develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
-		"start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
+		"start": "node index.js",
+		"heroku-postbuild": "cd client && npm install && npm run build"
 	},
 	"keywords": [],
 	"author": "",
