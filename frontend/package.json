@@ -49,10 +49,14 @@
 		"xhr2": "^0.2.1"
 	},
 	"scripts": {
-		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"install-client": "cd client && npm install",
+		"heroku-postbuild": "npm run install-client && npm run build",
+		"server": "nodemon server.js",
+		"develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
+		"start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
 	},
 	"eslintConfig": {
 		"extends": [
@@ -74,5 +78,8 @@
 	},
 	"devDependencies": {
 		"webpack": "^5.70.0"
+	},
+	"engines": {
+		"node": "16.14.2"
 	}
 }
