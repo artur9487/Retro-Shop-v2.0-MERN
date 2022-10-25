@@ -1,17 +1,8 @@
 {
-	"name": "backend",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"start": "node backend/index.js",
-		"heroku-postbuild": "cd frontend && npm install && npm run build"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"homepage": "https://retro-shop-mern.vercel.app",
+	"name": "my-react-app",
+	"version": "0.1.0",
+	"private": true,
 	"dependencies": {
 		"mongoose": "^6.6.1",
 		"@emotion/react": "^11.7.1",
@@ -57,6 +48,38 @@
 		"uuidv4": "^6.2.13",
 		"web-vitals": "^2.1.4",
 		"xhr2": "^0.2.1"
+	},
+	"scripts": {
+		"client": "npm start --prefix frontend",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject",
+		"install-client": "cd frontend && npm install",
+		"heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend",
+		"server": "nodemon backend/index.js",
+		"develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix frontend\"",
+		"start": "nodemon backend/index.js"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"webpack": "^5.70.0"
 	},
 	"engines": {
 		"node": "16.14.2"
