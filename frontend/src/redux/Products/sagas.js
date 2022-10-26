@@ -28,7 +28,9 @@ import {
 import { fetch_notyfication_end } from '../UI/actions';
 import { add_order_end } from './actions';
 
-const mainUrl = process.env.PORT || 'http://localhost:5000';
+const mainUrl = process.env.AppUrl
+	? process.env.AppUrl
+	: 'http://localhost:5000';
 
 //--------------UPDATE THE IMAGE IN YOUR PRODUCT---------
 
