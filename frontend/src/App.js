@@ -40,7 +40,7 @@ function App() {
 	const navigate = useNavigate();
 	const toto = true;
 
-	axios.defaults.baseURL = 'https://retro-shop-mern.vercel.app';
+	axios.defaults.baseURL = 'https://retroshopping.herokuapp.com';
 	const [isAuthorized, setIsAuthorized] = useState(false);
 
 	useEffect(() => {
