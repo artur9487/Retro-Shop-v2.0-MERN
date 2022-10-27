@@ -30,7 +30,7 @@ import { add_order_end } from './actions';
 
 console.log(process.env.AppUrl);
 
-const mainUrl = 'https://retroshopping.herokuapp';
+const mainUrl = 'https://retroshopping.herokuapp.com';
 
 //--------------UPDATE THE IMAGE IN YOUR PRODUCT---------
 
