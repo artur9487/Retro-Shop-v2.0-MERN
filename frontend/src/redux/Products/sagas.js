@@ -28,9 +28,9 @@ import {
 import { fetch_notyfication_end } from '../UI/actions';
 import { add_order_end } from './actions';
 
-const mainUrl = process.env.AppUrl
-	? process.env.AppUrl
-	: 'http://localhost:5000';
+console.log(process.env.AppUrl);
+
+const mainUrl = 'https://retroshopping.herokuapp';
 
 //--------------UPDATE THE IMAGE IN YOUR PRODUCT---------
 

@@ -11,9 +11,7 @@ import {
 } from './actions';
 import { fetch_products } from '../Products/actions';
 
-const mainUrl = process.env.AppUrl
-	? process.env.AppUrl
-	: 'http://localhost:5000';
+const mainUrl = 'https://retroshopping.herokuapp';
 
 //-------------SETTING THE COMMENT-------------
 export function* setCommentStart({ payload }) {
