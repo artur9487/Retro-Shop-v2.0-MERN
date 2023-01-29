@@ -248,49 +248,6 @@ exports.getComments = (req, res) => {
 		.catch((err) => res.status(400).json('Error:' + err));
 };
 
-//----------------------------------------
-const markingFunction = (notIdsOrders, notIdsComments, user) => {
-	CommentNotyfication.bulkWrite(
-		notIdsComments.map((id) => {
-			return {
-				updateOne: {
-					filter: { _id: id },
-					update: { $set: { marked: true } }
-				}
-			};
-		})
-	);
-
-	OrderNotyfication.bulkWrite(
-		notIdsOrders.map((id) => {
-			return {
-				updateOne: {
-					filter: { _id: id },
-					update: { $set: { marked: true } }
-				}
-			};
-		})
-	);
-
-	CommentNotyfication.find({ receiver: user })
-		.sort({ date: -1 })
-		.limit(10)
-		.then((comments) => {
-			OrderNotyfication.find({ receiver: user })
-				.sort({ date: -1 })
-				.limit(10)
-				.then((orders) => {
-					let notyfications = comments.concat(orders);
-					notyfications.sort((a, b) => b.date - a.date);
-					const notyfication10 = notyfications.slice(0, 10);
-
-					return res.json({
-						notyfications: notyfication10
-					});
-				});
-		});
-};
-
 exports.markNotyfications = (req, res) => {
 	const { user } = req.params;
 	const { notIdsOrders, notIdsComments } = req.body;

@@ -38,7 +38,6 @@ function App() {
 	const maxWidth900 = useMediaQuery('(max-width:899px)');
 	const maxWidth600 = useMediaQuery('(max-width:599px)');
 	const navigate = useNavigate();
-	const toto = true;
 
 	axios.defaults.baseURL = 'https://retroshopping.herokuapp.com';
 	const [isAuthorized, setIsAuthorized] = useState(false);
@@ -78,13 +77,9 @@ function App() {
 							exact
 							path='/'
 							element={
-								//	toto ? (
 								<CompleteApp>
 									<AllProducts />
 								</CompleteApp>
-								/*	) : (
-									<Navigate replace to='/api' />
-								)*/
 							}></Route>
 						<Route
 							exact
