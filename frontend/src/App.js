@@ -39,7 +39,7 @@ function App() {
 	const maxWidth600 = useMediaQuery('(max-width:599px)');
 	const navigate = useNavigate();
 
-	axios.defaults.baseURL = 'https://retroshopping.herokuapp.com';
+	axios.defaults.baseURL = 'https://retro-shop-v2-0-mern.onrender.com/';
 	const [isAuthorized, setIsAuthorized] = useState(false);
 
 	useEffect(() => {

@@ -11,7 +11,7 @@ import {
 } from './actions';
 import { fetch_products } from '../Products/actions';
 
-const mainUrl = 'https://retroshopping.herokuapp.com';
+const mainUrl = 'https://retro-shop-v2-0-mern.onrender.com/';
 
 //-------------SETTING THE COMMENT-------------
 export function* setCommentStart({ payload }) {

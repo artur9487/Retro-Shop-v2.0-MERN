@@ -1,9 +1,9 @@
 {
-	"homepage": "https://retroshopping.herokuapp.com",
+	"homepage": "https://retro-shop-v2-0-mern.onrender.com/",
 	"name": "my-react-app",
 	"version": "0.1.0",
 	"private": true,
-	"proxy": "https://retroshopping.herokuapp.com/",
+	"proxy": "https://retro-shop-v2-0-mern.onrender.com/",
 	"main": "./backend/index.js",
 	"dependencies": {
 		"@emotion/react": "^11.7.1",
