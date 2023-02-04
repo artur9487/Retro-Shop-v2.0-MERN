@@ -5,7 +5,7 @@ import { LOGIN_USER_START, REGISTER_USER_START, SIGN_OUT } from '../types';
 import { set_current_user_end, log_error } from './actions';
 import axios from 'axios';
 
-const mainUrl = 'https://retro-shop-v2-0-mern.onrender.com/';
+const mainUrl = 'https://retro-shop-v2-0-mern.onrender.com';
 
 //---------------------REGISTER THE USER---------------------
 export function* registerUserStart({ payload }) {

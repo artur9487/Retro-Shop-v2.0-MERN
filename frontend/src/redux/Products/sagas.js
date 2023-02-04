@@ -30,7 +30,7 @@ import { add_order_end } from './actions';
 
 console.log(process.env.AppUrl);
 
-const mainUrl = 'https://retro-shop-v2-0-mern.onrender.com/';
+const mainUrl = 'https://retro-shop-v2-0-mern.onrender.com';
 
 //--------------UPDATE THE IMAGE IN YOUR PRODUCT---------
 
