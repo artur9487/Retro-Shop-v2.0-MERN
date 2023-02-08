@@ -39,8 +39,6 @@ const ProductItem = (item) => {
 		return () => setOpen(false);
 	}, [open]);
 
-	console.log(open);
-
 	return (
 		<>
 			<Card className='boxek' sx={{ width: 250, height: 350, margin: 1 }}>

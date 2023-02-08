@@ -45,6 +45,8 @@ const ProductDetails = () => {
 		productDataArr = myProducts;
 	}
 
+	console.log(myProducts);
+
 	const productData = productDataArr.filter((item) => {
 		return item._id === productID;
 	});
