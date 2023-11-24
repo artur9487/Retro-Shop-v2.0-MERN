@@ -17,7 +17,7 @@ const CompleteApp = ({ children }) => {
 					position: 'relative',
 					minWidth: '100%',
 					minHeight: '40vh',
-					pt: { xs: 20, sm: user ? 25 : 20 }
+					pt: { xs: 20, sm: user ? 25 : 20 },
 				}}>
 				{children}
 			</Box>

@@ -1,9 +1,8 @@
 {
 	"homepage": "https://retro-shop-v2-0-mern.onrender.com/",
-	"name": "my-react-app",
+	"name": "retro-shop",
 	"version": "0.1.0",
 	"private": true,
-	"proxy": "https://retro-shop-v2-0-mern.onrender.com/",
 	"main": "./backend/index.js",
 	"dependencies": {
 		"@emotion/react": "^11.7.1",
@@ -53,7 +52,9 @@
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "cd ./backend && node index.js"
+		"start": "cd ./backend && node index.js",
+		"devo": "cd ./frontend/public && index.js",
+		"devo2": "cd ./frontend && react-scripts start"
 	},
 	"eslintConfig": {
 		"extends": [

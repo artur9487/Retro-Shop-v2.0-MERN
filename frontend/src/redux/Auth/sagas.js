@@ -1,19 +1,30 @@
 /** @format */
 
 import { takeLatest, put, all, call } from 'redux-saga/effects';
-import { LOGIN_USER_START, REGISTER_USER_START, SIGN_OUT } from '../types';
+import {
+	LOGIN_USER_START,
+	REGISTER_USER_START,
+	SIGN_OUT,
+} from '../types';
 import { set_current_user_end, log_error } from './actions';
 import axios from 'axios';
 
-const mainUrl = 'https://retro-shop-v2-0-mern.onrender.com';
+const urlFunction = () => {
+	if (process.env.NODE_ENV === 'production') {
+		return 'https://retro-shop-v2-0-mern.onrender.com';
+	} else {
+		return 'http://localhost:5000';
+	}
+};
 
 //---------------------REGISTER THE USER---------------------
 export function* registerUserStart({ payload }) {
+	const mainUrl = urlFunction();
 	const { email, password } = payload;
 	try {
 		const response = yield axios.post(`${mainUrl}/api/Register`, {
 			email: email,
-			password: password
+			password: password,
 		});
 
 		const { user, token } = response.data;
@@ -30,12 +41,13 @@ export function* onRegisterUserStart() {
 }
 //----------------------LOGIN THE USER----------------------
 export function* loginUserStart({ payload }) {
+	const mainUrl = urlFunction();
 	const { email, password } = payload;
 
 	try {
 		const response = yield axios.post(`${mainUrl}/api/Login`, {
 			email: email,
-			password: password
+			password: password,
 		});
 
 		const { user, token } = response.data;
@@ -79,6 +91,6 @@ export default function* AuthSagas() {
 	yield all([
 		call(onRegisterUserStart),
 		call(onLoginUserStart),
-		call(onSignOut)
+		call(onSignOut),
 	]);
 }

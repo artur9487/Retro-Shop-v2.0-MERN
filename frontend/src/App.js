@@ -1,7 +1,12 @@
 /** @format */
 
 import './App.scss';
-import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import {
+	Routes,
+	Route,
+	useNavigate,
+	Navigate,
+} from 'react-router-dom';
 import AllProducts from './Layout';
 import MyProducts from './myProductLayout';
 import Login from './Login';
@@ -28,9 +33,9 @@ function App() {
 	const theme = createTheme({
 		typography: {
 			button: {
-				textTransform: 'none'
-			}
-		}
+				textTransform: 'none',
+			},
+		},
 	});
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.AuthData.user);
@@ -39,7 +44,15 @@ function App() {
 	const maxWidth600 = useMediaQuery('(max-width:599px)');
 	const navigate = useNavigate();
 
-	axios.defaults.baseURL = 'https://retro-shop-v2-0-mern.onrender.com';
+	{
+		/*if (process.env.NODE_ENV === 'production') {
+		axios.defaults.baseURL =
+			'https://retro-shop-v2-0-mern.onrender.com';
+	} else {
+		axios.defaults.baseURL = 3000;
+	}*/
+	}
+
 	const [isAuthorized, setIsAuthorized] = useState(false);
 
 	useEffect(() => {
@@ -69,7 +82,7 @@ function App() {
 					user,
 					maxWidth1200,
 					maxWidth900,
-					maxWidth600
+					maxWidth600,
 				}}>
 				<RouteCompo>
 					<Routes>
@@ -105,7 +118,10 @@ function App() {
 							}>
 							<Route path=':productID' element={<ProductDetails />} />
 							<Route path='order' element={<CartLayout />} />
-							<Route path='notyfications' element={<NotyficationData />} />
+							<Route
+								path='notyfications'
+								element={<NotyficationData />}
+							/>
 						</Route>
 						<Route
 							path='api/logged/:user/yourProduct'
@@ -121,7 +137,10 @@ function App() {
 							<Route path=':productID' element={<ProductDetails />} />
 							<Route path='updateProduct' element={<DialogComp />} />
 							<Route path='newProduct' element={<DialogComp />} />
-							<Route path='notyfications' element={<NotyficationData />} />
+							<Route
+								path='notyfications'
+								element={<NotyficationData />}
+							/>
 							<Route path='order' element={<CartLayout />} />
 						</Route>
 						<Route
@@ -135,7 +154,10 @@ function App() {
 									<Navigate replace to='/api/login' />
 								)
 							}>
-							<Route path='notyfications' element={<NotyficationData />} />
+							<Route
+								path='notyfications'
+								element={<NotyficationData />}
+							/>
 							<Route path='order' element={<CartLayout />} />
 						</Route>
 						<Route

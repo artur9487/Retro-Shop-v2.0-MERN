@@ -12,7 +12,7 @@ import {
 	FETCH_ORDERS,
 	GET_PRODUCT_NUMBER,
 	SET_NEW_PRODUCT_IMAGE,
-	SET_UPDATED_PRODUCT_IMAGE
+	SET_UPDATED_PRODUCT_IMAGE,
 } from '../types';
 import {
 	clear_image,
@@ -23,24 +23,26 @@ import {
 	fetch_purchases_end,
 	get_product_number_end,
 	set_new_product_image_end,
-	set_product_end
+	set_product_end,
 } from './actions';
 import { fetch_notyfication_end } from '../UI/actions';
 import { add_order_end } from './actions';
 
-console.log(process.env.AppUrl);
-
-const mainUrl = 'https://retro-shop-v2-0-mern.onrender.com';
+const urlFunction = () => {
+	if (process.env.NODE_ENV === 'production') {
+		return 'https://retro-shop-v2-0-mern.onrender.com';
+	} else {
+		return 'http://localhost:5000';
+	}
+};
 
 //--------------UPDATE THE IMAGE IN YOUR PRODUCT---------
 
 export function* setUpdateProductImage({ payload }) {
+	const mainUrl = urlFunction();
 	try {
 		const formData = new FormData();
 		formData.append('file', payload.image);
-		for (var pair of formData.entries()) {
-			console.log(pair[0] + ', ' + pair[1]);
-		}
 		const response = yield axios.post(
 			`${mainUrl}/api/logged/${payload.email}/yourProduct/updateProduct`,
 			formData
@@ -61,6 +63,7 @@ export function* onSetUpdateProductImage() {
 //--------------SET A NEW IMAGE IN YOUR PRODUCT---------
 
 export function* setNewProductImage({ payload }) {
+	const mainUrl = urlFunction();
 	try {
 		const formData = new FormData();
 		formData.append('file', payload.image);
@@ -87,6 +90,7 @@ export function* onSetNewProductImage() {
 //----------------ADD YOUR PRODUCT------------------------------
 
 export function* setProductStart({ payload }) {
+	const mainUrl = urlFunction();
 	try {
 		const { email } = payload;
 
@@ -106,6 +110,7 @@ export function* onSetProduct() {
 
 //---------------------------FETCHING THE PRODUCTS----------------------------
 export function* fetchProducts({ payload }) {
+	const mainUrl = urlFunction();
 	try {
 		let querySnapshot;
 		let response;
@@ -114,13 +119,13 @@ export function* fetchProducts({ payload }) {
 			const { email } = payload.user;
 
 			response = yield axios.get(`${mainUrl}/api/logged/${email}`, {
-				params: { pageNumber: payload.page, nPerPage: payload.limit }
+				params: { pageNumber: payload.page, nPerPage: payload.limit },
 			});
 			const notyfications = response.data.notyfications;
 			yield put(fetch_notyfication_end(notyfications));
 		} else {
 			response = yield axios.get(`${mainUrl}/api`, {
-				params: { pageNumber: payload.page, nPerPage: payload.limit }
+				params: { pageNumber: payload.page, nPerPage: payload.limit },
 			});
 		}
 
@@ -133,7 +138,9 @@ export function* fetchProducts({ payload }) {
 		});
 
 		const pageInfo = { limit: payload.limit, page: payload.page };
-		yield put(set_product_end(querySnapshot.products, newDoc2, pageInfo));
+		yield put(
+			set_product_end(querySnapshot.products, newDoc2, pageInfo)
+		);
 	} catch (err) {
 		console.log(err);
 	}
@@ -149,7 +156,7 @@ export function* deleteProductStart({ payload }) {
 		const { email } = payload;
 		yield axios
 			.delete(`${mainUrl}/api/logged/${email}/yourProduct`, {
-				params: { id: payload.id }
+				params: { id: payload.id },
 			})
 			.then(() => console.log('Product deleted'));
 		yield put(fetch_my_products_start(payload.email));
@@ -183,6 +190,7 @@ export function* onUpdateProduct() {
 
 //------------ADD THE ORDERS TO NOTYFICATIONS----------
 export function* orderNotyfication(payload) {
+	const mainUrl = urlFunction();
 	const order = payload;
 	const { email, date } = order;
 
@@ -199,15 +207,15 @@ export function* orderNotyfication(payload) {
 							count: payload.products[i].count,
 							name: payload.products[i].name,
 							_id: payload.products[i]._id,
-							price: payload.products[i].price
-						}
+							price: payload.products[i].price,
+						},
 					],
 					buyer: email,
 					date,
 					receiver: payload.products[i].userProduct,
 					marked: false,
 					total: Number(payload.products[i].price),
-					type: 'order'
+					type: 'order',
 				});
 			} else {
 				newArr[index] = {
@@ -218,10 +226,11 @@ export function* orderNotyfication(payload) {
 							count: payload.products[i].count,
 							name: payload.products[i].name,
 							_id: payload.products[i]._id,
-							price: payload.products[i].price
-						}
+							price: payload.products[i].price,
+						},
 					],
-					total: Number(newArr[index].total) + payload.products[i].price
+					total:
+						Number(newArr[index].total) + payload.products[i].price,
 				};
 			}
 		}
@@ -229,7 +238,7 @@ export function* orderNotyfication(payload) {
 		yield axios
 			.post(`${mainUrl}/api/logged/${email}/order`, {
 				order: order,
-				newArr: newArr
+				newArr: newArr,
 			})
 			.then(() => console.log('Order notyfication added'));
 	} catch (err) {
@@ -239,12 +248,13 @@ export function* orderNotyfication(payload) {
 
 //----------------ADD AN ORDER---------------------------------
 export function* addOrderStart({ payload }) {
+	const mainUrl = urlFunction();
 	try {
 		const { order } = payload;
 
 		const {
 			order: { products, email },
-			pageInfo: { limit, page }
+			pageInfo: { limit, page },
 		} = payload;
 
 		let deleteDocuments = [];
@@ -254,7 +264,10 @@ export function* addOrderStart({ payload }) {
 			if (item.remain === 0) {
 				deleteDocuments.push(item._id);
 			} else {
-				updateDocuments.push({ productQuantity: item.remain, _id: item._id });
+				updateDocuments.push({
+					productQuantity: item.remain,
+					_id: item._id,
+				});
 			}
 		});
 
@@ -262,8 +275,8 @@ export function* addOrderStart({ payload }) {
 			yield axios
 				.delete(`${mainUrl}/api/logged/${email}/order`, {
 					params: {
-						deleteDocuments
-					}
+						deleteDocuments,
+					},
 				})
 				.then(() => console.log('Some products deleted'))
 				.catch((err) => console.log(`${err} occured`));
@@ -290,6 +303,7 @@ export function* onAddOrder() {
 
 //--------------------FETCH AN ORDER-----------------
 export function* fetchOrders({ payload }) {
+	const mainUrl = urlFunction();
 	try {
 		const user = payload;
 		const response = yield axios.get(
@@ -312,6 +326,7 @@ export function* onFetchOrders() {
 
 //--------------FETCH YOUR OWN PRODUCTS----------------
 export function* fetchMyProductsStart({ payload }) {
+	const mainUrl = urlFunction();
 	try {
 		const user = payload;
 		const response = yield axios.get(
@@ -331,6 +346,7 @@ export function* onFetchMyProducts() {
 
 //---------------GET THE NUMBER OF THE PRODUCTS FOR THE PAGINATION------------
 export function* getProductNumber() {
+	const mainUrl = urlFunction();
 	const response = yield axios.get(`${mainUrl}/api`);
 	const products = response.data;
 	let docNumber = 0;
@@ -356,6 +372,6 @@ export default function* productSagas() {
 		call(onAddOrder),
 		call(onFetchMyProducts),
 		call(onFetchOrders),
-		call(onGetProductNumber)
+		call(onGetProductNumber),
 	]);
 }

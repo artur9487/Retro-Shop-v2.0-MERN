@@ -41,7 +41,10 @@ const ProductItem = (item) => {
 
 	return (
 		<>
-			<Card className='boxek' sx={{ width: 250, height: 350, margin: 1 }}>
+			<Card
+				data-cy='singleProduct'
+				className='boxek'
+				sx={{ width: 1250, height: 350, margin: 1 }}>
 				<Box sx={{ position: 'relative', height: '80%' }}>
 					<CardMedia
 						sx={{ zIndex: 1, objectFit: 'contain' }}
@@ -60,20 +63,24 @@ const ProductItem = (item) => {
 							display: 'flex',
 							justifyContent: 'center',
 							height: 40,
-							transition: 'all 0.5s ease-in-out'
+							transition: 'all 0.5s ease-in-out',
 						}}
 						className='childBox'
 						disableSpacing>
 						<Button
 							color='inherit'
-							sx={{ color: 'black', bg: 'black', textTransform: 'none' }}
+							sx={{
+								color: 'black',
+								bg: 'black',
+								textTransform: 'none',
+							}}
 							onClick={() => handleClick()}>
 							<Typography
 								sx={{
 									color: 'black',
 									fontFamily: 'Sofia',
 									fontSize: 17,
-									fontStyle: 'italic'
+									fontStyle: 'italic',
 								}}
 								variant='body2'>
 								View More
@@ -87,11 +94,14 @@ const ProductItem = (item) => {
 						backgroundColor: 'white',
 						position: 'relative',
 						zIndex: 3,
-						height: '20%'
+						height: '20%',
 					}}>
 					<Stack direction='column' alignItems='center'>
 						<Typography
-							sx={{ fontFamily: 'Oleo Script Swash Caps', fontSize: 20 }}
+							sx={{
+								fontFamily: 'Oleo Script Swash Caps',
+								fontSize: 20,
+							}}
 							variant='body1'>
 							{productName}
 						</Typography>

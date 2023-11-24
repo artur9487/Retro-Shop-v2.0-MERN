@@ -3,7 +3,7 @@
 	"name": "my-react-app",
 	"version": "0.1.0",
 	"private": true,
-	"proxy": "https://retro-shop-v2-0-mern.onrender.com/",
+	"proxy": 5000,
 	"dependencies": {
 		"axios": "^0.27.2",
 		"body-parser": "^1.20.1",

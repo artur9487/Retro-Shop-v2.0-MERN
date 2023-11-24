@@ -16,7 +16,7 @@ const firebaseConfig = {
 	storageBucket: 'sweet-corner-shop.appspot.com',
 	messagingSenderId: '369614338288',
 	appId: process.env.APP_ID,
-	measurementId: 'G-781E8EG8D9'
+	measurementId: 'G-781E8EG8D9',
 };
 
 // Initialize Firebase
@@ -34,8 +34,9 @@ app.use(express.json());
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
 	useNewUrlParser: true,
-	useUnifiedTopology: true
+	useUnifiedTopology: true,
 });
+
 const connection = mongoose.connection;
 connection.once('open', () => {
 	console.log('MongoDB database connection established successfully');
@@ -43,12 +44,16 @@ connection.once('open', () => {
 
 app.use('/api', require(path.join(__dirname, 'api', 'endpoinst.js')));
 
-///if (process.env.NODE_ENV === 'production') {
-app.use(express.static(path.join(__dirname, '../frontend', 'build')));
-app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html'));
-});
-//}
+if (process.env.NODE_ENV === 'production') {
+	app.use(
+		express.static(path.join(__dirname, '../frontend', 'build'))
+	);
+	app.get('*', (req, res) => {
+		res.sendFile(
+			path.join(__dirname, '../frontend', 'build', 'index.html')
+		);
+	});
+}
 
 app.listen(port, () => {
 	console.log(`Server is running on port: ${port}`);

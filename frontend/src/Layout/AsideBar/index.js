@@ -8,7 +8,10 @@ import styled from 'styled-components';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
 import { useDispatch } from 'react-redux';
-import { fetch_products, filter_products } from '../../redux/Products/actions';
+import {
+	fetch_products,
+	filter_products,
+} from '../../redux/Products/actions';
 import { Typography } from '@mui/material';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
@@ -25,7 +28,7 @@ const data = [
 		title: 'Set Category',
 		options: ['Electronics', 'Clothes', 'Others'],
 		open: false,
-		height: 150
+		height: 150,
 	},
 	{ title: 'Set price range', open: false, height: 150 },
 	{
@@ -34,11 +37,11 @@ const data = [
 			'Above 4 stars',
 			'Above 3 stars',
 			'Above 2 stars',
-			'Above 1 star'
+			'Above 1 star',
 		],
 		open: false,
-		height: 230
-	}
+		height: 230,
+	},
 ];
 
 const AsideBar = () => {
@@ -135,6 +138,7 @@ const AsideBar = () => {
 			item.options.map((option) => {
 				return (
 					<Button
+						data-cy='optionData'
 						color='inherit'
 						sx={{ textTransform: 'none' }}
 						key={option}
@@ -144,7 +148,9 @@ const AsideBar = () => {
 								fontFamily: 'Sofia',
 								fontSize: 17,
 								fontWeight:
-									category === option || rating2 === option ? 1000 : 100
+									category === option || rating2 === option
+										? 1000
+										: 100,
 							}}
 							color='black'>
 							{option}
@@ -155,6 +161,7 @@ const AsideBar = () => {
 		) : (
 			<Box sx={{ width: '80%', margin: 'auto' }}>
 				<Slider
+					data-cy='optionSlider'
 					getAriaLabel={() => 'Price range'}
 					value={value}
 					onChange={handlePrice}
@@ -165,7 +172,7 @@ const AsideBar = () => {
 				<Typography
 					sx={{
 						fontFamily: 'Sofia',
-						fontSize: 14
+						fontSize: 14,
 					}}
 					variant='body2'>
 					{value[0]}$-{value[1]}$
@@ -176,18 +183,26 @@ const AsideBar = () => {
 	//------------------------SEGMENT WITH THE TITLE ON BIG SCREEN -------------------
 	const FilterPanel = open.map((item, indx) => {
 		return (
-			<FilterSegment key={indx} isOpen={item.open} height={item.height}>
+			<FilterSegment
+				data-cy='filterOption'
+				key={indx}
+				isOpen={item.open}
+				height={item.height}>
 				<UpperFilterSegment onClick={() => handleOpen(item.title)}>
 					<Typography
 						sx={{
 							fontFamily: 'Sofia',
 							fontSize: 20,
-							fontStyle: 'italic'
+							fontStyle: 'italic',
 						}}>
 						{item.title}
 					</Typography>
 					<Box sx={{ position: 'absolute', right: 0, top: 0 }}>
-						{!item.open ? <ArrowCircleDownIcon /> : <ArrowCircleUpIcon />}
+						{!item.open ? (
+							<ArrowCircleDownIcon />
+						) : (
+							<ArrowCircleUpIcon />
+						)}
 					</Box>
 				</UpperFilterSegment>
 				<DownFilterSegment>
@@ -207,7 +222,7 @@ const AsideBar = () => {
 						sx={{
 							fontFamily: 'Sofia',
 							fontSize: 22,
-							fontStyle: 'italic'
+							fontStyle: 'italic',
 						}}
 						variant='body1'>
 						{item.title}
@@ -224,19 +239,21 @@ const AsideBar = () => {
 		<aside>
 			{matchState ? (
 				<Box
+					data-cy='filterBar'
 					className={fadeIn}
 					sx={{
 						minHeight: 350,
 						width: 200,
 						margin: 'auto',
 						boxShadow: '2px 2px 7px rgb(204, 204, 204)',
-						p: 4
+						p: 4,
+						border: 4,
 					}}>
 					<Typography
 						sx={{
 							fontFamily: OleoFont,
 							fontSize: 30,
-							fontStyle: 'italic'
+							fontStyle: 'italic',
 						}}
 						textAlign='center'
 						variant='h4'>
@@ -246,7 +263,12 @@ const AsideBar = () => {
 					{err ? (
 						<Typography
 							textAlign='center'
-							sx={{ mb: 1, color: 'red', fontFamily: OleoFont, fontSize: 17 }}>
+							sx={{
+								mb: 1,
+								color: 'red',
+								fontFamily: OleoFont,
+								fontSize: 17,
+							}}>
 							Set All Fields
 						</Typography>
 					) : null}
@@ -259,7 +281,7 @@ const AsideBar = () => {
 								fontFamily: OleoFont,
 								fontSize: 22,
 								fontStyle: 'italic',
-								display: displayState ? 'none' : 'block'
+								display: displayState ? 'none' : 'block',
 							}}
 							textAlign='center'
 							variant='h4'>
@@ -272,7 +294,7 @@ const AsideBar = () => {
 								cursor: 'pointer',
 								fontFamily: OleoFont,
 								fontSize: 22,
-								fontStyle: 'italic'
+								fontStyle: 'italic',
 							}}
 							textAlign='center'
 							variant='h4'>
@@ -283,12 +305,14 @@ const AsideBar = () => {
 			) : (
 				<>
 					<Stack
+						data-cy='filterBar'
 						className={fadeIn}
 						justifyContent='center'
 						sx={{
-							height: 100,
+							height: 50,
 							width: 200,
-							margin: 'auto'
+							margin: 'auto',
+							border: 4,
 						}}>
 						<UpperFilterSegment
 							clickable={maxWidth1200}
@@ -308,7 +332,7 @@ const AsideBar = () => {
 									width: '100%',
 									fontFamily: OleoFont,
 									fontSize: 25,
-									fontStyle: 'italic'
+									fontStyle: 'italic',
 								}}>
 								Open Filter Bar
 							</Typography>
@@ -318,7 +342,7 @@ const AsideBar = () => {
 								p: 2,
 								textTransform: 'none',
 								fontFamily: OleoFont,
-								fontSize: 20
+								fontSize: 20,
 							}}
 							textAlign='center'
 							onClick={resetFilter}>
@@ -333,7 +357,7 @@ const AsideBar = () => {
 							sx={{
 								fontFamily: OleoFont,
 								fontSize: 30,
-								textAlign: 'center'
+								textAlign: 'center',
 							}}>
 							Filter Panel
 						</DialogTitle>
@@ -342,7 +366,11 @@ const AsideBar = () => {
 							{err ? (
 								<Typography
 									textAlign='center'
-									sx={{ color: 'red', fontFamily: OleoFont, fontSize: 15 }}>
+									sx={{
+										color: 'red',
+										fontFamily: OleoFont,
+										fontSize: 15,
+									}}>
 									Set All Fields
 								</Typography>
 							) : null}
@@ -360,7 +388,7 @@ const AsideBar = () => {
 										textTransform: 'none',
 										fontFamily: OleoFont,
 										fontSize: 22,
-										display: displayState ? 'none' : 'block'
+										display: displayState ? 'none' : 'block',
 									}}
 									variant='outline'>
 									Submit Filter
@@ -371,7 +399,7 @@ const AsideBar = () => {
 										cursor: 'pointer',
 										textTransform: 'none',
 										fontFamily: OleoFont,
-										fontSize: 22
+										fontSize: 22,
 									}}
 									variant='outline'>
 									Close Filter

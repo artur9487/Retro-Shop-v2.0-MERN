@@ -2,22 +2,34 @@
 
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 import axios from 'axios';
-import { SET_COMMENT_START, FETCH_COMMENT_START, SET_MARKED } from '../types';
+import {
+	SET_COMMENT_START,
+	FETCH_COMMENT_START,
+	SET_MARKED,
+} from '../types';
 
 import {
 	fetch_comments_end,
 	fetch_comments_start,
-	fetch_notyfication_end
+	fetch_notyfication_end,
 } from './actions';
 import { fetch_products } from '../Products/actions';
 
-const mainUrl = 'https://retro-shop-v2-0-mern.onrender.com';
+const urlFunction = () => {
+	if (process.env.NODE_ENV === 'production') {
+		return 'https://retro-shop-v2-0-mern.onrender.com';
+	} else {
+		return 'http://localhost:5000';
+	}
+};
 
 //-------------SETTING THE COMMENT-------------
 export function* setCommentStart({ payload }) {
 	const { obj, user, pageInfo } = payload;
 	const { productID } = obj;
 	const { limit, page } = pageInfo;
+
+	const mainUrl = urlFunction();
 
 	try {
 		yield axios
@@ -37,6 +49,8 @@ export function* onSetCommentStart() {
 
 //-----------FETCHING THE COMMENTS----------------
 export function* fetchCommentsStart({ payload }) {
+	const mainUrl = urlFunction();
+
 	try {
 		let comments;
 		const { productID, user } = payload;
@@ -63,12 +77,13 @@ export function* onFetchCommentsStart() {
 
 //-----------------SETTING THE RIGHT DATA OF THE NOTYFICATION DATA WHICH WERE READ--
 export function* setMarked({ payload }) {
+	const mainUrl = urlFunction();
 	const { notIdsOrders, notIdsComments, receiver } = payload;
 
 	let endpoints = [
 		`${mainUrl}/api/logged/${receiver}/notyfications`,
 		`${mainUrl}/api/logged/${receiver}/yourProduct/notyfications`,
-		`${mainUrl}/api/logged/${receiver}/personalData/notyfications`
+		`${mainUrl}/api/logged/${receiver}/personalData/notyfications`,
 	];
 
 	try {
@@ -76,12 +91,14 @@ export function* setMarked({ payload }) {
 			endpoints.map((endpoint) =>
 				axios.put(endpoint, {
 					notIdsOrders: notIdsOrders,
-					notIdsComments: notIdsComments
+					notIdsComments: notIdsComments,
 				})
 			)
 		);
 
-		yield put(fetch_notyfication_end(notyfications[0].data.notyfications));
+		yield put(
+			fetch_notyfication_end(notyfications[0].data.notyfications)
+		);
 	} catch (err) {
 		console.log(err);
 	}
@@ -95,6 +112,6 @@ export default function* UISagas() {
 	yield all([
 		call(onSetCommentStart),
 		call(onFetchCommentsStart),
-		call(onSetMarked)
+		call(onSetMarked),
 	]);
 }

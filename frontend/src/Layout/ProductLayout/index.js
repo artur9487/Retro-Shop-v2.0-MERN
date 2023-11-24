@@ -61,7 +61,7 @@ const ProductLayout = () => {
 				sx={{
 					display: 'flex',
 					justifyContent: 'center',
-					alignContent: 'center'
+					alignContent: 'center',
 				}}>
 				<ProductItem {...item} />
 			</Grid>
@@ -72,7 +72,10 @@ const ProductLayout = () => {
 			<Stack
 				alignItems='center'
 				justifyContent='center'
-				sx={{ p: 3, marginLeft: matches1400 && matches1200 ? 10 : 0 }}>
+				sx={{
+					p: 3,
+					marginLeft: matches1400 && matches1200 ? 10 : 0,
+				}}>
 				{products.products.length > 0 ? (
 					<Grid
 						className={fadeIn}
@@ -91,7 +94,10 @@ const ProductLayout = () => {
 						No products
 					</Typography>
 				)}
-				<Stack direction='row' justifyContent='center' sx={{ my: 4, pr: 0 }}>
+				<Stack
+					direction='row'
+					justifyContent='center'
+					sx={{ my: 4, pr: 0 }}>
 					<Pagination
 						count={products.productNumber}
 						page={page}
